@@ -25,93 +25,6 @@
       --neon-teal: 0 0 8px rgba(42,191,170,.6), 0 0 24px rgba(42,191,170,.3);
     }
 
-    /* ── LIGHT MODE ────────────────────────────────────────── */
-    body.light-mode {
-      --bg:      #F5F4F0;
-      --surface: #ECEAE4;
-      --card:    #E2E0DA;
-      --border:  #CFCDC6;
-      --muted:   #6B6874;
-      --white:   #1A1A1E;
-    }
-    body.light-mode #cursor-dot { background: var(--gold); }
-    body.light-mode nav.scrolled {
-      background: rgba(245,244,240,.90);
-    }
-    body.light-mode .hero-grid-bg {
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      opacity: .4;
-    }
-    body.light-mode body::before { opacity: .015; }
-
-    /* ── THEME TOGGLE ──────────────────────────────────────── */
-    .theme-toggle {
-      display: flex; align-items: center;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 3px;
-      gap: 2px;
-      flex-shrink: 0;
-    }
-    .theme-btn {
-      display: flex; align-items: center; gap: 5px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-family: 'Space Mono', monospace;
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .5px;
-      cursor: none;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      transition: background .2s, color .2s;
-    }
-    .theme-btn.active {
-      background: var(--bg);
-      color: var(--gold);
-      box-shadow: 0 1px 4px rgba(0,0,0,.2);
-    }
-    .theme-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
-
-    /* ── MARQUEE ───────────────────────────────────────────── */
-    .marquee-bar {
-      width: 100%;
-      overflow: hidden;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 13px 0;
-      position: relative; z-index: 2;
-    }
-    .marquee-track {
-      display: flex;
-      width: max-content;
-      animation: marquee-scroll 28s linear infinite;
-    }
-    .marquee-track:hover { animation-play-state: paused; }
-    .marquee-item {
-      display: inline-flex; align-items: center; gap: 18px;
-      font-family: 'Space Mono', monospace;
-      font-size: 11px; letter-spacing: 3px;
-      color: var(--gold);
-      padding: 0 32px;
-      white-space: nowrap;
-      text-transform: uppercase;
-    }
-    .marquee-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-      box-shadow: var(--neon-gold);
-    }
-    @keyframes marquee-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
     /* ── RESET ─────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -1150,38 +1063,11 @@
     <a href="#blog">Blog</a>
     <a href="#contact">Contact</a>
   </div>
-  <div style="display:flex;align-items:center;gap:14px;">
-    <div class="theme-toggle" id="themeToggle">
-      <button class="theme-btn" id="btnLight" onclick="setTheme('light')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        Light
-      </button>
-      <button class="theme-btn active" id="btnDark" onclick="setTheme('dark')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        Dark
-      </button>
-    </div>
-    <a href="#contact" class="nav-cta">Get In Touch</a>
-  </div>
+  <a href="#contact" class="nav-cta">Get In Touch</a>
 </nav>
 
-<!-- ── MARQUEE BAR ─────────────────────────────────────────── -->
-<div class="marquee-bar" style="margin-top:72px;">
-  <div class="marquee-track">
-    <!-- Duplicated for seamless loop -->
-    <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
-  </div>
-</div>
-
 <!-- ── HERO ────────────────────────────────────────────────── -->
-<section id="hero" style="padding-top:80px;">
+<section id="hero">
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
   <div class="hero-glow-2"></div>
@@ -1264,9 +1150,9 @@
 <!-- ── TRUSTED ──────────────────────────────────────────────── -->
 <section id="trusted">
   <div class="trusted-header reveal">
-    <div class="section-label" style="justify-content:center">CLIENTS</div>
+    <div class="section-label" style="justify-content:center">PARTNERS</div>
     <h2 class="trusted-title">Trusted By <span>Forward-Thinking</span> Businesses</h2>
-    <p class="trusted-sub">We build reliable software systems for forward-thinking businesses — creating solutions that solve real operational challenges.</p>
+    <p class="trusted-sub">We've partnered with innovative companies across various industries to deliver exceptional results — building software that works for real people, in real contexts.</p>
   </div>
 
   <div class="trusted-clients">
@@ -1305,7 +1191,7 @@
     <div class="stat-cell reveal reveal-delay-3">
       <div class="stat-icon teal-icon">🌐</div>
       <div class="stat-cell-num">2+</div>
-      <div class="stat-cell-label">Trusted Customers</div>
+      <div class="stat-cell-label">Industries Served</div>
       <div class="stat-cell-desc">GROWING FAST</div>
     </div>
     <div class="stat-cell reveal reveal-delay-4">
@@ -1549,7 +1435,7 @@
   <div class="testi-header reveal">
     <div class="section-label" style="justify-content:center">TESTIMONIALS</div>
     <h2 class="testi-h2">What Our <span style="color:var(--gold)">Clients</span> Say</h2>
-    <p style="color:var(--muted);font-size:14px;margin-top:8px">More reviews coming soon — currently working with our clients.</p>
+    <p style="color:var(--muted);font-size:14px;margin-top:8px">Real reviews coming soon — currently in conversation with our first clients.</p>
   </div>
   <div class="testi-grid">
     <div class="testi-card reveal reveal-delay-1">
@@ -1745,13 +1631,17 @@
       </div>
       <p class="footer-tagline">"The world runs on systems. We build them."</p>
       <div class="footer-socials">
+        <a href="mailto:info@calrixsoftworks.com" class="social-icon" title="Email">✉️</a>
         <a href="#" class="social-icon" title="WhatsApp">💬</a>
         <a href="#" class="social-icon" title="LinkedIn">in</a>
         <a href="#" class="social-icon" title="GitHub">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--muted)"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85 0 1.33-.01 2.41-.01 2.74 0 .27.18.58.69.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
         </a>
         <a href="#" class="social-icon" title="Instagram">📷</a>
+        <a href="#" class="social-icon" title="TikTok">🎵</a>
+        <a href="#" class="social-icon" title="Facebook">f</a>
         <a href="#" class="social-icon" title="X / Twitter">𝕏</a>
+        <a href="#" class="social-icon" title="Threads">@</a>
       </div>
     </div>
     <div>
@@ -1775,7 +1665,7 @@
       </div>
     </div>
     <div>
-      <div class="footer-col-title">Our Products</div>
+      <div class="footer-col-title">Products</div>
       <div class="footer-links">
         <a href="#">ShuleCloud</a>
         <a href="#">More Coming Soon</a>
@@ -1903,26 +1793,6 @@
 
     // Safety fallback
     setTimeout(finish, TARGET + 800);
-  })();
-
-  // ── Theme Toggle
-  function setTheme(mode) {
-    if (mode === 'light') {
-      document.body.classList.add('light-mode');
-      document.getElementById('btnLight').classList.add('active');
-      document.getElementById('btnDark').classList.remove('active');
-      localStorage.setItem('calrix-theme', 'light');
-    } else {
-      document.body.classList.remove('light-mode');
-      document.getElementById('btnDark').classList.add('active');
-      document.getElementById('btnLight').classList.remove('active');
-      localStorage.setItem('calrix-theme', 'dark');
-    }
-  }
-  // Apply saved theme on load (default: dark)
-  (function() {
-    const saved = localStorage.getItem('calrix-theme');
-    if (saved === 'light') setTheme('light');
   })();
 
   // ── Navbar scroll
