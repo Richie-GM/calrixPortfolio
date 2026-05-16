@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 305 295' fill='none'%3E%3Crect width='305' height='295' rx='48' fill='%2309090B'/%3E%3Cpath d='M 145,62 A 88,88 0 1,0 145,228' stroke='%23F4F1EB' stroke-width='30' stroke-linecap='round'/%3E%3Cline x1='195' y1='58' x2='195' y2='232' stroke='%23E6A520' stroke-width='26' stroke-linecap='round'/%3E%3Cpath d='M 195,58 A 52,47 0 0,1 195,152' stroke='%23E6A520' stroke-width='26' stroke-linecap='round'/%3E%3Cline x1='195' y1='152' x2='288' y2='232' stroke='%23E6A520' stroke-width='26' stroke-linecap='round'/%3E%3C/svg%3E">
   <title>CalRix Softworks — The world runs on systems. We build them.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
@@ -34,10 +35,11 @@
       --muted:   #6B6874;
       --white:   #1A1A1E;
     }
+    /* C arc turns dark to match "Cal" text in light mode */
+    body.light-mode .nav-logo svg path,
+    body.light-mode .footer-logo svg path { stroke: #1A1A1E; }
     body.light-mode #cursor-dot { background: var(--gold); }
-    body.light-mode nav.scrolled {
-      background: rgba(245,244,240,.90);
-    }
+    body.light-mode nav.scrolled { background: rgba(245,244,240,.90); }
     body.light-mode .hero-grid-bg {
       background-image:
         linear-gradient(var(--border) 1px, transparent 1px),
@@ -76,7 +78,7 @@
     }
     .theme-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
 
-    /* ── MARQUEE ───────────────────────────────────────────── */
+    /* ── MARQUEE — sticky below nav ───────────────────────── */
     .marquee-bar {
       width: 100%;
       overflow: hidden;
@@ -84,7 +86,7 @@
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       padding: 13px 0;
-      position: relative; z-index: 2;
+      position: fixed; top: 72px; left: 0; right: 0; z-index: 99;
     }
     .marquee-track {
       display: flex;
@@ -110,6 +112,30 @@
     @keyframes marquee-scroll {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
+    }
+
+    /* ── SERVICE CARD AS LINK ─────────────────────────────── */
+    a.service-card {
+      text-decoration: none; color: inherit; display: block; cursor: none;
+    }
+    .service-arrow {
+      display: inline-block; margin-left: 6px;
+      opacity: 0; transform: translateX(-4px);
+      transition: opacity .2s, transform .2s;
+      color: var(--gold);
+    }
+    a.service-card:hover .service-arrow { opacity: 1; transform: translateX(0); }
+
+    /* ── FOOTER LOGO — match header style ────────────────── */
+    .footer-logo { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .footer-logo-text { line-height: 1; }
+    .footer-logo-text .name {
+      font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+    }
+    .footer-logo-text .name span { color: var(--gold); }
+    .footer-logo-text .sub {
+      font-family: 'Space Mono', monospace; font-size: 7px;
+      letter-spacing: 3px; color: var(--muted); margin-top: 2px;
     }
 
     /* ── RESET ─────────────────────────────────────────────── */
@@ -302,7 +328,7 @@
     /* ── HERO ──────────────────────────────────────────────── */
     #hero {
       min-height: 100vh;
-      padding: 140px 64px 80px;
+      padding: 170px 64px 80px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
@@ -1166,7 +1192,7 @@
 </nav>
 
 <!-- ── MARQUEE BAR ─────────────────────────────────────────── -->
-<div class="marquee-bar" style="margin-top:72px;">
+<div class="marquee-bar">
   <div class="marquee-track">
     <!-- Duplicated for seamless loop -->
     <span class="marquee-item"><span class="marquee-dot"></span>THE WORLD RUNS ON SYSTEMS – WE BUILD THEM</span>
@@ -1224,39 +1250,78 @@
     </div>
   </div>
 
-  <!-- Right — Code Card -->
+  <!-- Right — Alternating Code Card (ShuleCloud 10s / Dotline 5s) -->
   <div>
-    <div class="code-card">
-      <div class="code-badge">// Building ShuleCloud v1.0</div>
-      <div class="code-card-header">
-        <div class="code-dot" style="background:#FF5F57"></div>
-        <div class="code-dot" style="background:#FEBC2E"></div>
-        <div class="code-dot" style="background:#28C840"></div>
-        <span class="code-filename">ShuleCloud/FeeController.php</span>
+    <div class="code-card" style="min-height:420px; position:relative;">
+
+      <!-- PANEL 1: ShuleCloud — default visible -->
+      <div id="panel-shule" style="position:absolute;inset:0;display:flex;flex-direction:column;opacity:1;transition:opacity .6s ease;">
+        <div class="code-badge">// Building ShuleCloud v1.0</div>
+        <div class="code-card-header">
+          <div class="code-dot" style="background:#FF5F57"></div>
+          <div class="code-dot" style="background:#FEBC2E"></div>
+          <div class="code-dot" style="background:#28C840"></div>
+          <span class="code-filename">ShuleCloud/FeeController.php</span>
+        </div>
+        <div class="code-body" style="flex:1;">
+          <div><span class="code-line-num">01</span><span class="c-cm">// CalRix Softworks · ShuleCloud</span></div>
+          <div><span class="code-line-num">02</span><span class="c-kw">namespace</span> <span class="c-wh">App\Http\Controllers;</span></div>
+          <div><span class="code-line-num">03</span></div>
+          <div><span class="code-line-num">04</span><span class="c-kw">class</span> <span class="c-fn">FeeController</span> <span class="c-kw">extends</span> <span class="c-wh">Controller</span></div>
+          <div><span class="code-line-num">05</span><span class="c-wh">{</span></div>
+          <div><span class="code-line-num">06</span>&nbsp;&nbsp;<span class="c-kw">public function</span> <span class="c-fn">collect</span><span class="c-wh">(Request $req) {</span></div>
+          <div><span class="code-line-num">07</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">$fee = Fee::</span><span class="c-fn">create</span><span class="c-wh">([</span></div>
+          <div><span class="code-line-num">08</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'student_id'</span> <span class="c-wh">=> $req->student_id,</span></div>
+          <div><span class="code-line-num">09</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'amount'</span>&nbsp;&nbsp;&nbsp;<span class="c-wh">=> $req->amount,</span></div>
+          <div><span class="code-line-num">10</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'status'</span>&nbsp;&nbsp;&nbsp;<span class="c-wh">=> </span><span class="c-str">'paid'</span><span class="c-wh">,</span></div>
+          <div><span class="code-line-num">11</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">]);</span></div>
+          <div><span class="code-line-num">12</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-kw">return</span> <span class="c-fn">response</span><span class="c-wh">()-></span><span class="c-fn">json</span><span class="c-wh">([</span></div>
+          <div><span class="code-line-num">13</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'message'</span> <span class="c-wh">=> </span><span class="c-str">'Fee recorded'</span><span class="c-wh">,</span></div>
+          <div><span class="code-line-num">14</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'data'</span>&nbsp;&nbsp;&nbsp;<span class="c-wh">=> $fee</span></div>
+          <div><span class="code-line-num">15</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">]);</span></div>
+          <div><span class="code-line-num">16</span>&nbsp;&nbsp;<span class="c-wh">}</span></div>
+          <div><span class="code-line-num">17</span><span class="c-wh">}</span></div>
+        </div>
+        <div class="code-status" style="position:absolute;bottom:20px;right:20px;">
+          <div class="status-dot"></div>
+          IN DEVELOPMENT
+        </div>
       </div>
-      <div class="code-body">
-        <div><span class="code-line-num">01</span><span class="c-cm">// CalRix Softworks · ShuleCloud</span></div>
-        <div><span class="code-line-num">02</span><span class="c-kw">namespace</span> <span class="c-wh">App\Http\Controllers;</span></div>
-        <div><span class="code-line-num">03</span></div>
-        <div><span class="code-line-num">04</span><span class="c-kw">class</span> <span class="c-fn">FeeController</span> <span class="c-kw">extends</span> <span class="c-wh">Controller</span></div>
-        <div><span class="code-line-num">05</span><span class="c-wh">{</span></div>
-        <div><span class="code-line-num">06</span>&nbsp;&nbsp;<span class="c-kw">public function</span> <span class="c-fn">collect</span><span class="c-wh">(Request $req) {</span></div>
-        <div><span class="code-line-num">07</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">$fee = Fee::</span><span class="c-fn">create</span><span class="c-wh">([</span></div>
-        <div><span class="code-line-num">08</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'student_id'</span> <span class="c-wh">=> $req->student_id,</span></div>
-        <div><span class="code-line-num">09</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'amount'</span> &nbsp;&nbsp;&nbsp;<span class="c-wh">=> $req->amount,</span></div>
-        <div><span class="code-line-num">10</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'status'</span> &nbsp;&nbsp;&nbsp;<span class="c-wh">=> </span><span class="c-str">'paid'</span><span class="c-wh">,</span></div>
-        <div><span class="code-line-num">11</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">]);</span></div>
-        <div><span class="code-line-num">12</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-kw">return</span> <span class="c-fn">response</span><span class="c-wh">()-></span><span class="c-fn">json</span><span class="c-wh">([</span></div>
-        <div><span class="code-line-num">13</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'message'</span> <span class="c-wh">=> </span><span class="c-str">'Fee recorded'</span><span class="c-wh">,</span></div>
-        <div><span class="code-line-num">14</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'data'</span> &nbsp;&nbsp;&nbsp;<span class="c-wh">=> $fee</span></div>
-        <div><span class="code-line-num">15</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">]);</span></div>
-        <div><span class="code-line-num">16</span>&nbsp;&nbsp;<span class="c-wh">}</span></div>
-        <div><span class="code-line-num">17</span><span class="c-wh">}</span></div>
+
+      <!-- PANEL 2: Dotline — hidden initially -->
+      <div id="panel-dotline" style="position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transition:opacity .6s ease;pointer-events:none;">
+        <div class="code-badge" style="background:rgba(42,191,170,.18);color:#2ABFAA;border-color:rgba(42,191,170,.35);box-shadow:0 0 12px rgba(42,191,170,.3);">// Built dotline.com ✓</div>
+        <div class="code-card-header">
+          <div class="code-dot" style="background:#FF5F57"></div>
+          <div class="code-dot" style="background:#FEBC2E"></div>
+          <div class="code-dot" style="background:#28C840"></div>
+          <span class="code-filename">Dotline/ProjectController.php</span>
+        </div>
+        <div class="code-body" style="flex:1;">
+          <div><span class="code-line-num">01</span><span class="c-cm">// CalRix Softworks · Dotline</span></div>
+          <div><span class="code-line-num">02</span><span class="c-kw">namespace</span> <span class="c-wh">App\Http\Controllers;</span></div>
+          <div><span class="code-line-num">03</span></div>
+          <div><span class="code-line-num">04</span><span class="c-kw">class</span> <span class="c-fn">ProjectController</span> <span class="c-kw">extends</span> <span class="c-wh">Controller</span></div>
+          <div><span class="code-line-num">05</span><span class="c-wh">{</span></div>
+          <div><span class="code-line-num">06</span>&nbsp;&nbsp;<span class="c-kw">public function</span> <span class="c-fn">index</span><span class="c-wh">() {</span></div>
+          <div><span class="code-line-num">07</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">$projects = Project::</span><span class="c-fn">all</span><span class="c-wh">();</span></div>
+          <div><span class="code-line-num">08</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-kw">return</span> <span class="c-fn">view</span><span class="c-wh">(</span><span class="c-str">'projects'</span><span class="c-wh">, [</span></div>
+          <div><span class="code-line-num">09</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'ongoing'</span>&nbsp;&nbsp;<span class="c-wh">=> $projects-></span><span class="c-fn">where</span><span class="c-wh">(</span><span class="c-str">'status'</span><span class="c-wh">,</span><span class="c-str">'ongoing'</span><span class="c-wh">),</span></div>
+          <div><span class="code-line-num">10</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'done'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">=> $projects-></span><span class="c-fn">where</span><span class="c-wh">(</span><span class="c-str">'status'</span><span class="c-wh">,</span><span class="c-str">'done'</span><span class="c-wh">),</span></div>
+          <div><span class="code-line-num">11</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-wh">]);</span></div>
+          <div><span class="code-line-num">12</span>&nbsp;&nbsp;<span class="c-wh">}</span></div>
+          <div><span class="code-line-num">13</span></div>
+          <div><span class="code-line-num">14</span>&nbsp;&nbsp;<span class="c-kw">public function</span> <span class="c-fn">show</span><span class="c-wh">(Project $p) {</span></div>
+          <div><span class="code-line-num">15</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-kw">return</span> <span class="c-fn">view</span><span class="c-wh">(</span><span class="c-str">'project.detail'</span><span class="c-wh">, compact(</span><span class="c-str">'p'</span><span class="c-wh">));</span></div>
+          <div><span class="code-line-num">16</span>&nbsp;&nbsp;<span class="c-wh">}</span></div>
+          <div><span class="code-line-num">17</span><span class="c-wh">}</span></div>
+        </div>
+        <div class="code-status" style="position:absolute;bottom:20px;right:20px;color:#2ABFAA;">
+          <div class="status-dot" style="background:#2ABFAA;box-shadow:0 0 6px rgba(42,191,170,.8);"></div>
+          DEPLOYED · LIVE
+        </div>
       </div>
-      <div class="code-status">
-        <div class="status-dot"></div>
-        IN DEVELOPMENT
-      </div>
+
     </div>
   </div>
 </section>
@@ -1410,26 +1475,26 @@
     <a href="services.html" class="btn-secondary">View All Services →</a>
   </div>
   <div class="services-grid">
-    <div class="service-card reveal reveal-delay-1">
+    <a href="services.html#web-development" class="service-card reveal reveal-delay-1">
       <div class="service-icon">🌐</div>
-      <div class="service-title">Web Design & Development</div>
+      <div class="service-title">Web Design & Development<span class="service-arrow">→</span></div>
       <p class="service-desc">From landing pages to full web applications — fast, responsive, and built to convert.</p>
-    </div>
-    <div class="service-card reveal reveal-delay-2">
+    </a>
+    <a href="services.html#mobile-apps" class="service-card reveal reveal-delay-2">
       <div class="service-icon">📱</div>
-      <div class="service-title">Mobile App Development</div>
+      <div class="service-title">Mobile App Development<span class="service-arrow">→</span></div>
       <p class="service-desc">Cross-platform mobile apps built with Flutter for iOS and Android with a native feel.</p>
-    </div>
-    <div class="service-card reveal reveal-delay-3">
+    </a>
+    <a href="services.html#custom-software" class="service-card reveal reveal-delay-3">
       <div class="service-icon">⚙️</div>
-      <div class="service-title">Custom Software Development</div>
+      <div class="service-title">Custom Software Development<span class="service-arrow">→</span></div>
       <p class="service-desc">Bespoke systems tailored to your exact business processes and operational needs.</p>
-    </div>
-    <div class="service-card reveal reveal-delay-1">
+    </a>
+    <a href="services.html#system-integration" class="service-card reveal reveal-delay-1">
       <div class="service-icon">🔗</div>
-      <div class="service-title">System Integration</div>
+      <div class="service-title">System Integration<span class="service-arrow">→</span></div>
       <p class="service-desc">Connecting your existing tools and platforms into a unified, efficient workflow.</p>
-    </div>
+    </a>
   </div>
   <div class="services-cta reveal">
     <a href="#contact" class="btn-primary">Let's Build Together →</a>
@@ -1496,7 +1561,7 @@
           <span class="project-tag">PHP</span>
         </div>
         <div class="project-meta">
-          <span>📅 — months</span>
+          <span>📅 1 — months</span>
           <span>👥 2 developers</span>
         </div>
         <div class="project-actions">
@@ -1526,7 +1591,7 @@
           <span class="project-tag">HTML/CSS</span>
         </div>
         <div class="project-meta">
-          <span>📅 — months</span>
+          <span>📅 3 — months</span>
           <span>👥 2 developers</span>
         </div>
         <div class="project-actions">
@@ -1733,14 +1798,15 @@
   <div class="footer-top">
     <div class="footer-brand">
       <div class="footer-logo">
-        <svg width="36" height="36" viewBox="0 0 305 295" fill="none">
+        <svg width="34" height="34" viewBox="0 0 305 295" fill="none">
           <path d="M 145,62 A 88,88 0 1,0 145,228" stroke="#F4F1EB" stroke-width="30" stroke-linecap="round"/>
           <line x1="195" y1="58" x2="195" y2="232" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
           <path d="M 195,58 A 52,47 0 0,1 195,152" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
           <line x1="195" y1="152" x2="288" y2="232" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
         </svg>
-        <div class="footer-brand-text">
-          <div class="name">Cal<span>Rix</span> <span style="color:var(--muted);font-size:.55em;letter-spacing:4px">SOFTWORKS</span></div>
+        <div class="footer-logo-text">
+          <div class="name">Cal<span>Rix</span></div>
+          <div class="sub">SOFTWORKS</div>
         </div>
       </div>
       <p class="footer-tagline">"The world runs on systems. We build them."</p>
@@ -1768,10 +1834,10 @@
     <div>
       <div class="footer-col-title">Services</div>
       <div class="footer-links">
-        <a href="services.html">Web Development</a>
-        <a href="services.html">Mobile Apps</a>
-        <a href="services.html">Custom Software</a>
-        <a href="services.html">System Integration</a>
+        <a href="services.html#web-development">Web Development</a>
+        <a href="services.html#mobile-apps">Mobile Apps</a>
+        <a href="services.html#custom-software">Custom Software</a>
+        <a href="services.html#system-integration">System Integration</a>
       </div>
     </div>
     <div>
@@ -2039,6 +2105,43 @@
       btn.disabled = false;
     });
   });
+
+  // ── Theme Toggle
+  function setTheme(mode) {
+    if (mode === 'light') {
+      document.body.classList.add('light-mode');
+      document.getElementById('btnLight').classList.add('active');
+      document.getElementById('btnDark').classList.remove('active');
+      localStorage.setItem('calrix-theme', 'light');
+    } else {
+      document.body.classList.remove('light-mode');
+      document.getElementById('btnDark').classList.add('active');
+      document.getElementById('btnLight').classList.remove('active');
+      localStorage.setItem('calrix-theme', 'dark');
+    }
+  }
+  (function() { if (localStorage.getItem('calrix-theme') === 'light') setTheme('light'); })();
+
+  // ── Alternating hero code card — ShuleCloud 10s / Dotline 5s
+  (function() {
+    var shule   = document.getElementById('panel-shule');
+    var dotline = document.getElementById('panel-dotline');
+    if (!shule || !dotline) return;
+    var FADE = 600;
+    function switchTo(incoming, outgoing, stayMs) {
+      outgoing.style.opacity = '0';
+      outgoing.style.pointerEvents = 'none';
+      setTimeout(function() {
+        incoming.style.opacity = '1';
+        incoming.style.pointerEvents = 'auto';
+        setTimeout(function() {
+          if (incoming === shule) switchTo(dotline, shule, 5000);
+          else switchTo(shule, dotline, 10000);
+        }, stayMs);
+      }, FADE);
+    }
+    setTimeout(function() { switchTo(dotline, shule, 5000); }, 10000);
+  })();
 </script>
 </body>
 </html>
