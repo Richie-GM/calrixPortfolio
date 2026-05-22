@@ -1129,6 +1129,281 @@
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+    /* ── PARALLAX — hero glows move on scroll ──────────────── */
+    .hero-glow, .hero-glow-2 { will-change: transform; }
+
+    /* ── MAGNETIC BUTTON ───────────────────────────────────── */
+    .magnetic-wrap { display: inline-block; position: relative; }
+    .btn-magnetic {
+      will-change: transform;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow .2s;
+    }
+    .btn-magnetic:hover { box-shadow: var(--neon-gold); }
+
+    /* ── SHULECLOUD SHOWCASE ────────────────────────────────── */
+    #showcase {
+      padding: 100px 64px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .showcase-header { text-align: center; margin-bottom: 60px; }
+    .showcase-h2 {
+      font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,48px);
+      font-weight: 800; letter-spacing: -1px; margin-bottom: 14px;
+    }
+    .showcase-h2 .gold { color: var(--gold); }
+    .showcase-sub {
+      font-size: 15px; color: var(--muted); font-weight: 300;
+      max-width: 560px; margin: 0 auto; line-height: 1.8;
+    }
+    .showcase-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Space Mono', monospace; font-size: 10px;
+      color: var(--gold); border: 1px solid rgba(230,165,32,.3);
+      padding: 5px 14px; border-radius: 4px; margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+    .showcase-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); box-shadow: var(--neon-gold);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    .showcase-wrap {
+      display: grid; grid-template-columns: 260px 1fr;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,.5);
+      min-height: 460px;
+    }
+    .showcase-sidebar {
+      background: var(--bg); border-right: 1px solid var(--border);
+      padding: 28px 0; display: flex; flex-direction: column;
+    }
+    .sc-sidebar-label {
+      font-family: 'Space Mono', monospace; font-size: 9px;
+      letter-spacing: 2px; color: var(--muted);
+      padding: 0 24px 16px; border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .sc-tab {
+      display: flex; align-items: center; gap: 14px;
+      padding: 15px 24px; cursor: none;
+      transition: background .2s; border-left: 3px solid transparent;
+    }
+    .sc-tab:hover { background: rgba(230,165,32,.04); }
+    .sc-tab.active { background: rgba(230,165,32,.07); border-left-color: var(--gold); }
+    .sc-tab-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+      transition: background .2s, border-color .2s, box-shadow .2s;
+    }
+    .sc-tab.active .sc-tab-icon {
+      background: rgba(230,165,32,.12); border-color: rgba(230,165,32,.3);
+      box-shadow: 0 0 12px rgba(230,165,32,.15);
+    }
+    .sc-tab-label {
+      font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+      color: var(--muted); transition: color .2s;
+    }
+    .sc-tab.active .sc-tab-label { color: var(--white); }
+    .sc-tab-desc { font-size: 11px; color: var(--muted); opacity: .6; margin-top: 2px; }
+    .sc-auto-bar { margin-top: auto; padding: 20px 24px 4px; }
+    .sc-auto-label {
+      font-family: 'Space Mono', monospace; font-size: 9px;
+      letter-spacing: 1px; color: var(--muted); opacity: .5; margin-bottom: 8px;
+    }
+    .sc-auto-track { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .sc-auto-fill {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, var(--gold), var(--teal));
+      border-radius: 2px; transition: width .1s linear;
+    }
+    .showcase-screen { position: relative; overflow: hidden; }
+    .sc-panel {
+      position: absolute; inset: 0; padding: 28px 32px;
+      opacity: 0; transition: opacity .4s ease;
+      pointer-events: none; display: flex; flex-direction: column; gap: 18px;
+    }
+    .sc-panel.active { opacity: 1; pointer-events: auto; }
+    .sc-panel-header { display: flex; align-items: center; justify-content: space-between; }
+    .sc-panel-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; }
+    .sc-panel-action {
+      font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px;
+      color: var(--gold); border: 1px solid rgba(230,165,32,.3);
+      padding: 5px 14px; border-radius: 5px; cursor: none;
+    }
+    .sc-table { width: 100%; border-collapse: collapse; }
+    .sc-table th {
+      font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px;
+      color: var(--muted); padding: 0 12px 10px;
+      text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .sc-table td {
+      padding: 10px 12px; font-size: 13px;
+      border-bottom: 1px solid rgba(42,42,48,.5);
+    }
+    .sc-table tr:last-child td { border-bottom: none; }
+    .sc-table tr { transition: background .15s; }
+    .sc-table tr:hover td { background: rgba(230,165,32,.03); }
+    .sc-badge {
+      font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px;
+      padding: 3px 9px; border-radius: 4px;
+    }
+    .sc-badge.paid { background: rgba(42,191,170,.12); border: 1px solid rgba(42,191,170,.25); color: var(--teal); }
+    .sc-badge.pending { background: rgba(230,165,32,.12); border: 1px solid rgba(230,165,32,.3); color: var(--gold); }
+    .sc-summary { display: flex; gap: 14px; flex-wrap: wrap; }
+    .sc-sum-card {
+      flex: 1; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 18px;
+    }
+    .sc-sum-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--muted); margin-bottom: 6px; }
+    .sc-sum-val { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--gold); }
+    .sc-sum-val.teal { color: var(--teal); }
+    .sc-student-search {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 16px;
+    }
+    .sc-search-icon { color: var(--muted); font-size: 14px; }
+    .sc-search-text { font-size: 13px; color: var(--muted); font-style: italic; }
+    .sc-student-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .sc-student-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px;
+      display: flex; align-items: center; gap: 10px;
+      transition: border-color .2s;
+    }
+    .sc-student-card:hover { border-color: rgba(230,165,32,.3); }
+    .sc-avatar {
+      width: 32px; height: 32px; border-radius: 7px;
+      background: rgba(230,165,32,.12); border: 1px solid rgba(230,165,32,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 800;
+      color: var(--gold); flex-shrink: 0;
+    }
+    .sc-student-name { font-size: 12px; font-weight: 500; line-height: 1.3; }
+    .sc-student-class { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--muted); margin-top: 1px; }
+    .sc-student-status { display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+    .sc-status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+    .sc-status-text { font-size: 10px; color: var(--teal); }
+    .sc-att-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 4px; }
+    .sc-att-day-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--muted); text-align: center; }
+    .sc-att-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .sc-att-cell {
+      height: 34px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .sc-att-cell.present { background: rgba(42,191,170,.12); border-color: rgba(42,191,170,.25); color: var(--teal); }
+    .sc-att-cell.absent { background: rgba(255,77,77,.1); border-color: rgba(255,77,77,.2); color: #ff6b6b; }
+    .sc-att-cell.weekend { background: rgba(42,42,48,.4); color: var(--border); }
+    .sc-att-cell.today { background: rgba(230,165,32,.15); border-color: rgba(230,165,32,.4); color: var(--gold); box-shadow: 0 0 10px rgba(230,165,32,.2); }
+    .sc-att-summary { display: flex; gap: 14px; }
+    .sc-att-sum-item { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; }
+    .sc-att-sum-num { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--gold); line-height: 1; }
+    .sc-att-sum-num.teal { color: var(--teal); }
+    .sc-att-sum-num.red  { color: #ff6b6b; }
+    .sc-att-sum-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .sc-chart-wrap { display: flex; align-items: flex-end; gap: 10px; height: 110px; }
+    .sc-bar-col { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+    .sc-bar {
+      width: 100%; border-radius: 5px 5px 0 0;
+      background: rgba(230,165,32,.2); border: 1px solid rgba(230,165,32,.25);
+      position: relative; overflow: hidden;
+    }
+    .sc-bar::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(230,165,32,.55) 0%, rgba(230,165,32,.12) 100%);
+    }
+    .sc-bar.highlight { background: rgba(230,165,32,.45); border-color: var(--gold); box-shadow: 0 0 14px rgba(230,165,32,.3); }
+    .sc-bar-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--muted); }
+    .sc-report-stats { display: flex; gap: 14px; }
+    .sc-report-stat { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
+    .sc-report-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--muted); margin-bottom: 6px; }
+    .sc-report-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--gold); }
+    .sc-report-val.teal  { color: var(--teal); }
+    .sc-report-val.green { color: #4CAF82; }
+
+    /* ── WHY CALRIX ────────────────────────────────────────── */
+    #why-calrix {
+      padding: 100px 64px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .why-header { text-align: center; margin-bottom: 64px; }
+    .why-h2 {
+      font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,48px);
+      font-weight: 800; letter-spacing: -1px; margin-bottom: 14px;
+    }
+    .why-h2 .gold { color: var(--gold); }
+    .why-sub { font-size: 15px; color: var(--muted); font-weight: 300; max-width: 480px; margin: 0 auto; line-height: 1.8; }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .why-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 32px;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+    }
+    .why-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(230,165,32,.05), transparent 60%);
+      opacity: 0; transition: opacity .3s;
+    }
+    .why-card:hover {
+      border-color: rgba(230,165,32,.4); transform: translateY(-6px);
+      box-shadow: 0 28px 70px rgba(0,0,0,.4), 0 0 30px rgba(230,165,32,.06);
+    }
+    .why-card:hover::before { opacity: 1; }
+    .why-card-num {
+      position: absolute; top: -10px; right: 16px;
+      font-family: 'Syne', sans-serif; font-size: 88px; font-weight: 800;
+      color: rgba(230,165,32,.05); line-height: 1; pointer-events: none;
+      transition: color .3s;
+    }
+    .why-card:hover .why-card-num { color: rgba(230,165,32,.09); }
+    .why-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: rgba(230,165,32,.1); border: 1px solid rgba(230,165,32,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 22px;
+      box-shadow: 0 0 16px rgba(230,165,32,.1);
+      transition: box-shadow .3s, background .3s;
+    }
+    .why-card:hover .why-icon { background: rgba(230,165,32,.15); box-shadow: 0 0 24px rgba(230,165,32,.2); }
+    .why-card-title {
+      font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800;
+      margin-bottom: 12px; line-height: 1.2;
+    }
+    .why-card-desc { font-size: 13px; color: var(--muted); line-height: 1.8; font-weight: 300; }
+    .why-card-line {
+      margin-top: 24px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-family: 'Space Mono', monospace; font-size: 9px;
+      letter-spacing: 2px; color: rgba(230,165,32,.4);
+      transition: color .3s;
+    }
+    .why-card:hover .why-card-line { color: rgba(230,165,32,.65); }
+
+    /* ── CONTACT CHANNEL HOVER ─────────────────────────────── */
+    .contact-channel {
+      text-decoration: none; color: inherit;
+      transition: border-color .2s, transform .2s;
+    }
+    .contact-channel:hover { border-color: rgba(230,165,32,.3); transform: translateX(4px); }
+    .channel-arrow {
+      margin-left: auto; color: var(--muted); font-size: 16px;
+      opacity: 0; transition: opacity .2s, transform .2s;
+    }
+    .contact-channel:hover .channel-arrow { opacity: 1; transform: translateX(4px); }
+
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -1207,7 +1482,7 @@
 </div>
 
 <!-- ── HERO ────────────────────────────────────────────────── -->
-<section id="hero" style="padding-top:80px;">
+<section id="hero" style="padding-top:136px;">
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
   <div class="hero-glow-2"></div>
@@ -1223,7 +1498,7 @@
     </h1>
     <p class="hero-sub">CalRix Softworks is a bootstrapped tech company from Dar es Salaam, building reliable software solutions for businesses across Tanzania and beyond.</p>
     <div class="hero-btns">
-      <a href="#" class="btn-primary" id="calendly-btn">
+      <a href="https://calendly.com/mathiasrichie27/free-30-minute-discovery-call" class="btn-primary" id="calendly-btn">
         📞 Get a 30 Min Free Call
       </a>
       <a href="#projects" class="btn-secondary">
@@ -1357,19 +1632,19 @@
   <div class="stats-row">
     <div class="stat-cell reveal reveal-delay-1">
       <div class="stat-icon gold-icon">🎯</div>
-      <div class="stat-cell-num">3+</div>
+      <div class="stat-cell-num" data-count-to="3" data-suffix="+">3+</div>
       <div class="stat-cell-label">Projects Delivered</div>
       <div class="stat-cell-desc">AND COUNTING</div>
     </div>
     <div class="stat-cell reveal reveal-delay-2">
       <div class="stat-icon gold-icon">✅</div>
-      <div class="stat-cell-num">100%</div>
+      <div class="stat-cell-num" data-count-to="100" data-suffix="%">100%</div>
       <div class="stat-cell-label">Success Rate</div>
       <div class="stat-cell-desc">EVERY PROJECT</div>
     </div>
     <div class="stat-cell reveal reveal-delay-3">
       <div class="stat-icon teal-icon">🌐</div>
-      <div class="stat-cell-num">2+</div>
+      <div class="stat-cell-num" data-count-to="2" data-suffix="+">2+</div>
       <div class="stat-cell-label">Trusted Customers</div>
       <div class="stat-cell-desc">GROWING FAST</div>
     </div>
@@ -1410,6 +1685,138 @@
       <div class="value-pill"><span class="icon">🌍</span> Rootedness</div>
       <div class="value-pill"><span class="icon">🔒</span> Reliability</div>
       <div class="value-pill"><span class="icon">↗️</span> Growth</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SHULECLOUD SHOWCASE ────────────────────────────────────── -->
+<section id="showcase">
+  <div class="showcase-header reveal">
+    <div class="showcase-badge">
+      <span class="showcase-badge-dot"></span>
+      CURRENTLY IN DEVELOPMENT
+    </div>
+    <h2 class="showcase-h2">Meet <span class="gold">ShuleCloud</span></h2>
+    <p class="showcase-sub">Our flagship SaaS product — a cloud-based school management system built from scratch for Tanzania's private primary schools.</p>
+  </div>
+
+  <div class="showcase-wrap reveal">
+    <div class="showcase-sidebar">
+      <div class="sc-sidebar-label">MODULES</div>
+      <div class="sc-tab active" data-tab="fees">
+        <div class="sc-tab-icon">💰</div>
+        <div><div class="sc-tab-label">Fee Collection</div><div class="sc-tab-desc">Track & record payments</div></div>
+      </div>
+      <div class="sc-tab" data-tab="students">
+        <div class="sc-tab-icon">👥</div>
+        <div><div class="sc-tab-label">Student Registry</div><div class="sc-tab-desc">Manage student profiles</div></div>
+      </div>
+      <div class="sc-tab" data-tab="attendance">
+        <div class="sc-tab-icon">📋</div>
+        <div><div class="sc-tab-label">Attendance</div><div class="sc-tab-desc">Daily tracking & reports</div></div>
+      </div>
+      <div class="sc-tab" data-tab="reports">
+        <div class="sc-tab-icon">📊</div>
+        <div><div class="sc-tab-label">Financial Reports</div><div class="sc-tab-desc">Dashboards & analytics</div></div>
+      </div>
+      <div class="sc-auto-bar">
+        <div class="sc-auto-label">AUTO-CYCLING</div>
+        <div class="sc-auto-track"><div class="sc-auto-fill" id="scAutoFill"></div></div>
+      </div>
+    </div>
+
+    <div class="showcase-screen">
+      <!-- Fee Collection -->
+      <div class="sc-panel active" id="sc-fees">
+        <div class="sc-panel-header">
+          <div class="sc-panel-title">Recent Transactions</div>
+          <div class="sc-panel-action">+ Add Payment</div>
+        </div>
+        <table class="sc-table">
+          <thead><tr><th>STUDENT</th><th>CLASS</th><th>AMOUNT (TZS)</th><th>STATUS</th></tr></thead>
+          <tbody>
+            <tr><td>M. Hassan</td><td>Grade 5</td><td>45,000</td><td><span class="sc-badge paid">✓ PAID</span></td></tr>
+            <tr><td>A. Juma</td><td>Grade 3</td><td>45,000</td><td><span class="sc-badge paid">✓ PAID</span></td></tr>
+            <tr><td>F. Mbeki</td><td>Grade 7</td><td>60,000</td><td><span class="sc-badge pending">⏳ PENDING</span></td></tr>
+            <tr><td>Z. Said</td><td>Grade 4</td><td>45,000</td><td><span class="sc-badge paid">✓ PAID</span></td></tr>
+            <tr><td>N. Omar</td><td>Grade 6</td><td>60,000</td><td><span class="sc-badge pending">⏳ PENDING</span></td></tr>
+          </tbody>
+        </table>
+        <div class="sc-summary">
+          <div class="sc-sum-card"><div class="sc-sum-label">COLLECTED</div><div class="sc-sum-val">TZS 135,000</div></div>
+          <div class="sc-sum-card"><div class="sc-sum-label">PENDING</div><div class="sc-sum-val teal">TZS 120,000</div></div>
+          <div class="sc-sum-card"><div class="sc-sum-label">STUDENTS</div><div class="sc-sum-val">248</div></div>
+        </div>
+      </div>
+
+      <!-- Student Registry -->
+      <div class="sc-panel" id="sc-students">
+        <div class="sc-panel-header">
+          <div class="sc-panel-title">Student Registry</div>
+          <div class="sc-panel-action">+ Enroll Student</div>
+        </div>
+        <div class="sc-student-search">
+          <span class="sc-search-icon">🔍</span>
+          <span class="sc-search-text">Search students by name, class, or ID...</span>
+        </div>
+        <div class="sc-student-grid">
+          <div class="sc-student-card"><div class="sc-avatar">MH</div><div><div class="sc-student-name">M. Hassan</div><div class="sc-student-class">GRADE 5 · ID: 0041</div><div class="sc-student-status"><div class="sc-status-dot"></div><span class="sc-status-text">Active</span></div></div></div>
+          <div class="sc-student-card"><div class="sc-avatar">AJ</div><div><div class="sc-student-name">A. Juma</div><div class="sc-student-class">GRADE 3 · ID: 0018</div><div class="sc-student-status"><div class="sc-status-dot"></div><span class="sc-status-text">Active</span></div></div></div>
+          <div class="sc-student-card"><div class="sc-avatar">FM</div><div><div class="sc-student-name">F. Mbeki</div><div class="sc-student-class">GRADE 7 · ID: 0072</div><div class="sc-student-status"><div class="sc-status-dot"></div><span class="sc-status-text">Active</span></div></div></div>
+          <div class="sc-student-card"><div class="sc-avatar">ZS</div><div><div class="sc-student-name">Z. Said</div><div class="sc-student-class">GRADE 4 · ID: 0033</div><div class="sc-student-status"><div class="sc-status-dot"></div><span class="sc-status-text">Active</span></div></div></div>
+          <div class="sc-student-card"><div class="sc-avatar">NO</div><div><div class="sc-student-name">N. Omar</div><div class="sc-student-class">GRADE 6 · ID: 0059</div><div class="sc-student-status"><div class="sc-status-dot"></div><span class="sc-status-text">Active</span></div></div></div>
+          <div class="sc-student-card"><div class="sc-avatar">BK</div><div><div class="sc-student-name">B. Khamis</div><div class="sc-student-class">GRADE 2 · ID: 0009</div><div class="sc-student-status"><div class="sc-status-dot"></div><span class="sc-status-text">Active</span></div></div></div>
+        </div>
+        <div class="sc-summary">
+          <div class="sc-sum-card"><div class="sc-sum-label">TOTAL ENROLLED</div><div class="sc-sum-val">248</div></div>
+          <div class="sc-sum-card"><div class="sc-sum-label">ACTIVE</div><div class="sc-sum-val teal">241</div></div>
+          <div class="sc-sum-card"><div class="sc-sum-label">NEW THIS MONTH</div><div class="sc-sum-val">7</div></div>
+        </div>
+      </div>
+
+      <!-- Attendance -->
+      <div class="sc-panel" id="sc-attendance">
+        <div class="sc-panel-header">
+          <div class="sc-panel-title">Attendance — May 2025</div>
+          <div class="sc-panel-action">Export PDF</div>
+        </div>
+        <div class="sc-att-header">
+          <div class="sc-att-day-label">MON</div><div class="sc-att-day-label">TUE</div><div class="sc-att-day-label">WED</div><div class="sc-att-day-label">THU</div><div class="sc-att-day-label">FRI</div><div class="sc-att-day-label">SAT</div><div class="sc-att-day-label">SUN</div>
+        </div>
+        <div class="sc-att-grid">
+          <div class="sc-att-cell present">✓</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell weekend">—</div><div class="sc-att-cell weekend">—</div>
+          <div class="sc-att-cell present">✓</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell absent">✗</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell weekend">—</div><div class="sc-att-cell weekend">—</div>
+          <div class="sc-att-cell present">✓</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell absent">✗</div><div class="sc-att-cell present">✓</div><div class="sc-att-cell weekend">—</div><div class="sc-att-cell weekend">—</div>
+          <div class="sc-att-cell present">✓</div><div class="sc-att-cell today">★</div><div class="sc-att-cell weekend">—</div><div class="sc-att-cell weekend">—</div><div class="sc-att-cell weekend">—</div><div class="sc-att-cell weekend">—</div><div class="sc-att-cell weekend">—</div>
+        </div>
+        <div class="sc-att-summary">
+          <div class="sc-att-sum-item"><div class="sc-att-sum-num teal">18</div><div class="sc-att-sum-lbl">Days Present</div></div>
+          <div class="sc-att-sum-item"><div class="sc-att-sum-num red">2</div><div class="sc-att-sum-lbl">Days Absent</div></div>
+          <div class="sc-att-sum-item"><div class="sc-att-sum-num">90%</div><div class="sc-att-sum-lbl">Attendance Rate</div></div>
+          <div class="sc-att-sum-item"><div class="sc-att-sum-num" style="color:var(--muted)">8</div><div class="sc-att-sum-lbl">Weekends</div></div>
+        </div>
+      </div>
+
+      <!-- Financial Reports -->
+      <div class="sc-panel" id="sc-reports">
+        <div class="sc-panel-header">
+          <div class="sc-panel-title">Financial Overview — 2025</div>
+          <div class="sc-panel-action">Download Report</div>
+        </div>
+        <div class="sc-chart-wrap">
+          <div class="sc-bar-col"><div class="sc-bar" style="height:55px;"></div><div class="sc-bar-label">JAN</div></div>
+          <div class="sc-bar-col"><div class="sc-bar" style="height:72px;"></div><div class="sc-bar-label">FEB</div></div>
+          <div class="sc-bar-col"><div class="sc-bar" style="height:64px;"></div><div class="sc-bar-label">MAR</div></div>
+          <div class="sc-bar-col"><div class="sc-bar" style="height:88px;"></div><div class="sc-bar-label">APR</div></div>
+          <div class="sc-bar-col"><div class="sc-bar highlight" style="height:96px;"></div><div class="sc-bar-label">MAY</div></div>
+          <div class="sc-bar-col"><div class="sc-bar" style="height:40px;opacity:.3;"></div><div class="sc-bar-label">JUN</div></div>
+        </div>
+        <div class="sc-report-stats">
+          <div class="sc-report-stat"><div class="sc-report-label">TOTAL COLLECTED</div><div class="sc-report-val">TZS 2.4M</div></div>
+          <div class="sc-report-stat"><div class="sc-report-label">OUTSTANDING</div><div class="sc-report-val teal">TZS 420K</div></div>
+          <div class="sc-report-stat"><div class="sc-report-label">GROWTH MOM</div><div class="sc-report-val green">+12%</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1497,7 +1904,62 @@
     </a>
   </div>
   <div class="services-cta reveal">
-    <a href="#contact" class="btn-primary">Let's Build Together →</a>
+    <div class="magnetic-wrap">
+      <a href="#contact" class="btn-primary btn-magnetic" id="magneticBtn">Let's Build Together →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY CALRIX ────────────────────────────────────────────── -->
+<section id="why-calrix">
+  <div class="why-header reveal">
+    <div class="section-label" style="justify-content:center">WHY US</div>
+    <h2 class="why-h2">Why Choose <span class="gold">CalRix?</span></h2>
+    <p class="why-sub">Six reasons clients in Tanzania trust us to build their critical systems.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal reveal-delay-1">
+      <div class="why-card-num">01</div>
+      <div class="why-icon">🇹🇿</div>
+      <div class="why-card-title">Local Roots,<br/>Global Standards</div>
+      <p class="why-card-desc">We're based in Dar es Salaam. We understand Tanzanian business realities, infrastructure constraints, and user expectations — and we build accordingly.</p>
+      <div class="why-card-line">LOCAL-FIRST APPROACH</div>
+    </div>
+    <div class="why-card reveal reveal-delay-2">
+      <div class="why-card-num">02</div>
+      <div class="why-icon">⚙️</div>
+      <div class="why-card-title">Craftsmanship<br/>First, Always</div>
+      <p class="why-card-desc">We don't cut corners. Every component is deliberate, every function purposeful. We write code we're proud to show — and proud to maintain.</p>
+      <div class="why-card-line">QUALITY OVER SPEED</div>
+    </div>
+    <div class="why-card reveal reveal-delay-3">
+      <div class="why-card-num">03</div>
+      <div class="why-icon">🤝</div>
+      <div class="why-card-title">True Partnership,<br/>Not Just a Contract</div>
+      <p class="why-card-desc">We get invested in your problem, your users, and your success. Before the first line of code and long after the final deployment.</p>
+      <div class="why-card-line">LONG-TERM THINKING</div>
+    </div>
+    <div class="why-card reveal reveal-delay-1">
+      <div class="why-card-num">04</div>
+      <div class="why-icon">🔒</div>
+      <div class="why-card-title">Reliability<br/>by Design</div>
+      <p class="why-card-desc">Systems engineered for uptime, security, and long-term maintainability. We build software that runs when it needs to — 24 hours a day, 7 days a week.</p>
+      <div class="why-card-line">BUILT TO RUN 24/7</div>
+    </div>
+    <div class="why-card reveal reveal-delay-2">
+      <div class="why-card-num">05</div>
+      <div class="why-icon">📈</div>
+      <div class="why-card-title">Architecture<br/>That Scales</div>
+      <p class="why-card-desc">From 10 users to 10,000 — we design with growth in mind. Your system should never be a bottleneck when your business takes off.</p>
+      <div class="why-card-line">SCALABLE BY DEFAULT</div>
+    </div>
+    <div class="why-card reveal reveal-delay-3">
+      <div class="why-card-num">06</div>
+      <div class="why-icon">💡</div>
+      <div class="why-card-title">Full Transparency<br/>at Every Step</div>
+      <p class="why-card-desc">No black boxes. We keep you in the loop at every stage — decisions, progress, blockers, and wins. You always know where your project stands.</p>
+      <div class="why-card-line">OPEN COMMUNICATION</div>
+    </div>
   </div>
 </section>
 
@@ -1724,27 +2186,30 @@
       <h2 class="contact-h2">Ready To <span class="gold">Build</span><br/>Something?</h2>
       <p class="contact-sub">Tell us about your project and let's figure out how CalRix Softworks can help. We respond within 24 hours.</p>
       <div class="contact-channels">
-        <div class="contact-channel">
+        <a href="mailto:info@calrixsoftworks.com" class="contact-channel">
           <div class="channel-icon">✉️</div>
           <div>
             <div class="channel-label">EMAIL</div>
             <div class="channel-value">info@calrixsoftworks.com</div>
           </div>
-        </div>
-        <div class="contact-channel">
+          <span class="channel-arrow">→</span>
+        </a>
+        <a href="https://wa.me/255794954954" target="_blank" rel="noopener noreferrer" class="contact-channel">
           <div class="channel-icon">💬</div>
           <div>
             <div class="channel-label">WHATSAPP</div>
-            <div class="channel-value">Add number here</div>
+            <div class="channel-value">+255 794 954 954</div>
           </div>
-        </div>
-        <div class="contact-channel">
+          <span class="channel-arrow">→</span>
+        </a>
+        <a href="tel:+255794954954" class="contact-channel">
           <div class="channel-icon">📞</div>
           <div>
             <div class="channel-label">PHONE</div>
-            <div class="channel-value">Add number here</div>
+            <div class="channel-value">+255 794 954 954</div>
           </div>
-        </div>
+          <span class="channel-arrow">→</span>
+        </a>
       </div>
     </div>
 
@@ -1811,7 +2276,7 @@
       </div>
       <p class="footer-tagline">"The world runs on systems. We build them."</p>
       <div class="footer-socials">
-        <a href="#" class="social-icon" title="WhatsApp">💬</a>
+        <a href="https://wa.me/255794954954" target="_blank" rel="noopener noreferrer" class="social-icon" title="WhatsApp">💬</a>
         <a href="#" class="social-icon" title="LinkedIn">in</a>
         <a href="#" class="social-icon" title="GitHub">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--muted)"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85 0 1.33-.01 2.41-.01 2.74 0 .27.18.58.69.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
@@ -2141,6 +2606,112 @@
       }, FADE);
     }
     setTimeout(function() { switchTo(dotline, shule, 5000); }, 10000);
+  })();
+
+  // ── Parallax scroll (hero glow layers)
+  (function() {
+    var glow1 = document.querySelector('.hero-glow');
+    var glow2 = document.querySelector('.hero-glow-2');
+    if (!glow1 || !glow2) return;
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          var y = window.scrollY;
+          glow1.style.transform = 'translateY(' + (y * 0.28) + 'px)';
+          glow2.style.transform = 'translateY(' + (y * 0.18) + 'px)';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // ── Animated counting stats
+  (function() {
+    var counters = document.querySelectorAll('[data-count-to]');
+    if (!counters.length) return;
+    function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+    function animateCount(el) {
+      var target   = parseInt(el.dataset.countTo, 10);
+      var suffix   = el.dataset.suffix || '';
+      var duration = 1600;
+      var start    = performance.now();
+      function step(now) {
+        var elapsed  = now - start;
+        var progress = Math.min(elapsed / duration, 1);
+        el.textContent = Math.round(easeOutQuart(progress) * target) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    var counterObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !entry.target.dataset.counted) {
+          entry.target.dataset.counted = 'true';
+          animateCount(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function(el) { counterObserver.observe(el); });
+  })();
+
+  // ── Magnetic button ("Let's Build Together" only)
+  (function() {
+    var btn = document.getElementById('magneticBtn');
+    if (!btn) return;
+    var STRENGTH = 0.38;
+    btn.addEventListener('mousemove', function(e) {
+      var rect = btn.getBoundingClientRect();
+      var dx = (e.clientX - (rect.left + rect.width  / 2)) * STRENGTH;
+      var dy = (e.clientY - (rect.top  + rect.height / 2)) * STRENGTH;
+      btn.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+    });
+    btn.addEventListener('mouseleave', function() {
+      btn.style.transform = 'translate(0, 0)';
+    });
+  })();
+
+  // ── ShuleCloud Showcase — tab switcher + auto-cycle progress bar
+  (function() {
+    var tabs     = document.querySelectorAll('.sc-tab');
+    var panels   = document.querySelectorAll('.sc-panel');
+    var autoFill = document.getElementById('scAutoFill');
+    if (!tabs.length || !panels.length) return;
+    var currentIdx = 0;
+    var CYCLE_MS   = 4000;
+    var cycleStart = performance.now();
+    var paused     = false;
+
+    function activateTab(idx) {
+      tabs.forEach(function(t)   { t.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      tabs[idx].classList.add('active');
+      panels[idx].classList.add('active');
+      currentIdx = idx;
+      cycleStart = performance.now();
+    }
+
+    tabs.forEach(function(tab, i) {
+      tab.addEventListener('click', function() { activateTab(i); paused = false; });
+    });
+
+    function tickProgress(now) {
+      if (!paused) {
+        var elapsed = now - cycleStart;
+        var pct = Math.min((elapsed / CYCLE_MS) * 100, 100);
+        if (autoFill) autoFill.style.width = pct + '%';
+        if (elapsed >= CYCLE_MS) activateTab((currentIdx + 1) % tabs.length);
+      }
+      requestAnimationFrame(tickProgress);
+    }
+
+    var wrap = document.querySelector('.showcase-wrap');
+    if (wrap) {
+      wrap.addEventListener('mouseenter', function() { paused = true; });
+      wrap.addEventListener('mouseleave', function() { paused = false; cycleStart = performance.now(); });
+    }
+    requestAnimationFrame(tickProgress);
   })();
 </script>
 </body>
