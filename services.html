@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 305 295' fill='none'%3E%3Crect width='305' height='295' rx='48' fill='%2309090B'/%3E%3Cpath d='M 145,62 A 88,88 0 1,0 145,228' stroke='%23F4F1EB' stroke-width='30' stroke-linecap='round'/%3E%3Cline x1='195' y1='58' x2='195' y2='232' stroke='%23E6A520' stroke-width='26' stroke-linecap='round'/%3E%3Cpath d='M 195,58 A 52,47 0 0,1 195,152' stroke='%23E6A520' stroke-width='26' stroke-linecap='round'/%3E%3Cline x1='195' y1='152' x2='288' y2='232' stroke='%23E6A520' stroke-width='26' stroke-linecap='round'/%3E%3C/svg%3E">
+  <title>Services — CalRix Softworks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── VARIABLES ─────────────────────────────────────────── */
+    :root {
+      --gold:      #E6A520;
+      --gold-dim:  #7A5510;
+      --gold-glow: rgba(230,165,32,.12);
+      --teal:      #2ABFAA;
+      --teal-glow: rgba(42,191,170,.10);
+      --white:     #F4F1EB;
+      --bg:        #09090B;
+      --surface:   #111114;
+      --card:      #18181C;
+      --border:    #2A2A30;
+      --muted:     #8A8790;
+      --neon-gold: 0 0 8px rgba(230,165,32,.6), 0 0 24px rgba(230,165,32,.3);
+      --neon-teal: 0 0 8px rgba(42,191,170,.6), 0 0 24px rgba(42,191,170,.3);
+    }
+    body.light-mode {
+      --bg: #F5F4F0; --surface: #ECEAE4; --card: #E2E0DA;
+      --border: #CFCDC6; --muted: #6B6874; --white: #1A1A1E;
+    }
+    body.light-mode nav.scrolled { background: rgba(245,244,240,.90); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden; cursor: none;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── CURSOR ────────────────────────────────────────────── */
+    #cursor-dot {
+      width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
+      position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+      box-shadow: var(--neon-gold);
+    }
+    #cursor-ring {
+      width: 32px; height: 32px; border: 1.5px solid rgba(230,165,32,.5);
+      border-radius: 50%; position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transition: transform .18s ease, border-color .2s;
+    }
+    body:hover #cursor-ring { border-color: var(--gold); }
+
+    /* ── NOISE ─────────────────────────────────────────────── */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .025; pointer-events: none;
+    }
+
+    /* ── NAVBAR ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 64px; height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background .3s, border-color .3s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(9,9,11,.88); backdrop-filter: blur(16px);
+      border-bottom-color: var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 14px; }
+    .nav-logo-text { line-height: 1; }
+    .nav-logo-text .name { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+    .nav-logo-text .name span { color: var(--gold); }
+    .nav-logo-text .sub { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 3px; color: var(--muted); margin-top: 2px; }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .25s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after, .nav-links a.active-link::after { width: 100%; }
+    .nav-links a.active-link { color: var(--gold); }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .theme-toggle { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 3px; gap: 2px; }
+    .theme-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 6px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; cursor: none; border: none; background: transparent; color: var(--muted); transition: background .2s, color .2s; }
+    .theme-btn.active { background: var(--bg); color: var(--gold); box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+    .theme-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .nav-cta { padding: 10px 24px; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; border-radius: 6px; cursor: none; transition: background .2s, color .2s, box-shadow .2s; }
+    .nav-cta:hover { background: var(--gold); color: var(--bg); box-shadow: var(--neon-gold); }
+
+    /* ── SHARED ────────────────────────────────────────────── */
+    .section-label { display: inline-flex; align-items: center; gap: 10px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--gold); margin-bottom: 16px; }
+    .section-label::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--gold); }
+    .btn-primary { padding: 14px 28px; background: var(--gold); color: var(--bg); font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px; border: none; border-radius: 8px; cursor: none; transition: transform .2s, box-shadow .2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--neon-gold); }
+    .btn-secondary { padding: 14px 28px; background: transparent; color: var(--white); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; cursor: none; transition: border-color .2s, color .2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-secondary:hover { border-color: var(--white); }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+    /* ── HERO ──────────────────────────────────────────────── */
+    #hero {
+      padding: 160px 64px 100px;
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 64px 64px; opacity: .2; pointer-events: none;
+    }
+    .hero-glow-a {
+      position: absolute; top: -150px; right: -100px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--gold-glow) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-glow-b {
+      position: absolute; bottom: -100px; left: 200px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: 760px; }
+    .hero-tag { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--teal); border: 1px solid rgba(42,191,170,.3); padding: 6px 14px; border-radius: 4px; margin-bottom: 28px; letter-spacing: 1px; }
+    .hero-h1 { font-family: 'Syne', sans-serif; font-size: clamp(44px,6vw,88px); font-weight: 800; line-height: .95; letter-spacing: -2px; margin-bottom: 24px; }
+    .hero-h1 .gold { color: var(--gold); }
+    .hero-h1 .outline { -webkit-text-stroke: 1px var(--white); color: transparent; }
+    .hero-sub { font-size: 16px; color: var(--muted); line-height: 1.8; max-width: 540px; font-weight: 300; margin-bottom: 40px; }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 60px; }
+    .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid var(--border); }
+    .hero-stat-num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--gold); }
+    .hero-stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── SERVICES EXPLORER ─────────────────────────────────── */
+    #services-explorer {
+      padding: 100px 64px;
+      background: var(--bg);
+    }
+    .explorer-header { margin-bottom: 56px; }
+    .explorer-h2 { font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,48px); font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+    .explorer-h2 .gold { color: var(--gold); }
+    .explorer-sub { font-size: 15px; color: var(--muted); font-weight: 300; max-width: 500px; line-height: 1.8; }
+
+    .explorer-wrap {
+      display: grid; grid-template-columns: 300px 1fr;
+      gap: 0; border: 1px solid var(--border); border-radius: 20px;
+      overflow: hidden; background: var(--card);
+      min-height: 580px;
+      box-shadow: 0 40px 100px rgba(0,0,0,.4);
+    }
+
+    /* Sidebar */
+    .explorer-sidebar {
+      background: var(--surface); border-right: 1px solid var(--border);
+      padding: 8px 0;
+    }
+    .explorer-sidebar-label {
+      font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px;
+      color: var(--muted); padding: 20px 28px 12px;
+      border-bottom: 1px solid var(--border); margin-bottom: 8px;
+    }
+    .svc-tab {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 28px; cursor: none;
+      transition: background .2s; border-left: 3px solid transparent;
+      position: relative;
+    }
+    .svc-tab:hover { background: rgba(230,165,32,.04); }
+    .svc-tab.active { background: rgba(230,165,32,.08); border-left-color: var(--gold); }
+    .svc-tab-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+      transition: background .2s, border-color .2s, box-shadow .2s;
+    }
+    .svc-tab.active .svc-tab-icon {
+      background: rgba(230,165,32,.12); border-color: rgba(230,165,32,.3);
+      box-shadow: 0 0 16px rgba(230,165,32,.15);
+    }
+    .svc-tab-num {
+      position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+      font-family: 'Space Mono', monospace; font-size: 10px;
+      color: var(--border); letter-spacing: 1px;
+      transition: color .2s;
+    }
+    .svc-tab.active .svc-tab-num { color: rgba(230,165,32,.4); }
+    .svc-tab-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--muted); transition: color .2s; line-height: 1.2; }
+    .svc-tab.active .svc-tab-title { color: var(--white); }
+    .svc-tab-desc { font-size: 11px; color: var(--muted); opacity: .5; margin-top: 3px; }
+
+    /* Panel */
+    .explorer-panel-wrap { position: relative; overflow: hidden; }
+    .svc-panel {
+      position: absolute; inset: 0; padding: 44px 52px;
+      opacity: 0; transition: opacity .4s ease;
+      pointer-events: none; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 32px;
+    }
+    .svc-panel.active { opacity: 1; pointer-events: auto; position: relative; }
+
+    .svc-panel-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+    .svc-panel-headline { flex: 1; }
+    .svc-panel-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--teal); border: 1px solid rgba(42,191,170,.25); padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; display: inline-block; }
+    .svc-panel-title { font-family: 'Syne', sans-serif; font-size: clamp(22px,2.5vw,32px); font-weight: 800; letter-spacing: -.5px; margin-bottom: 10px; }
+    .svc-panel-subtitle { font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 300; font-style: italic; }
+    .svc-panel-meta { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; flex-shrink: 0; }
+    .svc-meta-pill {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 16px;
+      text-align: right;
+    }
+    .svc-meta-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--muted); margin-bottom: 4px; }
+    .svc-meta-val { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--gold); }
+
+    .svc-panel-divider { height: 1px; background: var(--border); }
+
+    .svc-panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+
+    .svc-block-title { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--gold); margin-bottom: 14px; }
+
+    .svc-perfect-for {
+      background: rgba(42,191,170,.05); border: 1px solid rgba(42,191,170,.15);
+      border-radius: 12px; padding: 20px 24px;
+    }
+    .svc-perfect-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--teal); margin-bottom: 12px; }
+    .svc-perfect-list { display: flex; flex-direction: column; gap: 8px; }
+    .svc-perfect-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .svc-perfect-item::before { content: '→'; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
+
+    .svc-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .svc-deliverables li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .svc-deliverables li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+
+    .svc-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+    .svc-stack-chip {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 7px 12px;
+      font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted);
+      transition: border-color .2s, color .2s;
+    }
+    .svc-stack-chip:hover { border-color: rgba(230,165,32,.3); color: var(--white); }
+    .svc-stack-chip span { font-size: 14px; }
+
+    .svc-panel-cta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding-top: 4px; }
+
+    /* ── TRIPLE-BLINK ──────────────────────────────────────── */
+    @keyframes triple-blink {
+      0%   { box-shadow: none; }
+      8%   { box-shadow: 0 0 0 3px rgba(230,165,32,.8), 0 0 50px rgba(230,165,32,.4); }
+      20%  { box-shadow: none; }
+      35%  { box-shadow: 0 0 0 3px rgba(230,165,32,.8), 0 0 50px rgba(230,165,32,.4); }
+      50%  { box-shadow: none; }
+      65%  { box-shadow: 0 0 0 3px rgba(230,165,32,.8), 0 0 50px rgba(230,165,32,.4); }
+      80%  { box-shadow: none; }
+      100% { box-shadow: none; }
+    }
+    .triple-blink { animation: triple-blink 2.4s ease-in-out; }
+    @keyframes triple-blink-tab {
+      0%   { background: rgba(230,165,32,.08); }
+      8%   { background: rgba(230,165,32,.22); }
+      20%  { background: rgba(230,165,32,.08); }
+      35%  { background: rgba(230,165,32,.22); }
+      50%  { background: rgba(230,165,32,.08); }
+      65%  { background: rgba(230,165,32,.22); }
+      80%  { background: rgba(230,165,32,.08); }
+      100% { background: rgba(230,165,32,.08); }
+    }
+    .triple-blink-tab { animation: triple-blink-tab 2.4s ease-in-out; }
+
+    /* ── HOW WE WORK ───────────────────────────────────────── */
+    #process {
+      padding: 100px 64px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .process-header { text-align: center; margin-bottom: 72px; }
+    .process-h2 { font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,48px); font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+    .process-h2 .gold { color: var(--gold); }
+    .process-sub { font-size: 15px; color: var(--muted); font-weight: 300; }
+    .process-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; position: relative; }
+    .process-steps::before {
+      content: ''; position: absolute; top: 36px; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 15%, var(--border) 85%, transparent);
+    }
+    .process-step { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 16px; position: relative; }
+    .process-step-num {
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--card);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+      color: var(--muted); margin-bottom: 20px; position: relative; z-index: 2;
+      transition: border-color .3s, box-shadow .3s, color .3s;
+    }
+    .process-step:hover .process-step-num {
+      border-color: var(--gold); color: var(--gold); box-shadow: 0 0 20px rgba(230,165,32,.2);
+    }
+    .process-step-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20px; opacity: 0; transition: opacity .3s; }
+    .process-step:hover .process-step-num > span.step-num-text { opacity: 0; transition: opacity .2s; }
+    .process-step-label { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .process-step-desc { font-size: 12px; color: var(--muted); line-height: 1.7; font-weight: 300; }
+    .process-step-time { display: inline-block; margin-top: 10px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--gold); border: 1px solid rgba(230,165,32,.2); padding: 3px 9px; border-radius: 4px; background: rgba(230,165,32,.05); }
+
+    /* ── ENGAGEMENT MODELS ─────────────────────────────────── */
+    #engagement {
+      padding: 100px 64px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+    .engagement-header { text-align: center; margin-bottom: 56px; }
+    .engagement-h2 { font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,48px); font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+    .engagement-h2 .gold { color: var(--gold); }
+    .engagement-sub { font-size: 15px; color: var(--muted); font-weight: 300; max-width: 480px; margin: 0 auto; line-height: 1.8; }
+    .engagement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .engagement-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 40px 36px;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+    }
+    .engagement-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(230,165,32,.05), transparent 60%); opacity: 0; transition: opacity .3s; }
+    .engagement-card:hover { border-color: rgba(230,165,32,.4); transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 30px rgba(230,165,32,.06); }
+    .engagement-card:hover::before { opacity: 1; }
+    .engagement-card.featured { border-color: rgba(230,165,32,.35); background: linear-gradient(160deg, rgba(230,165,32,.06) 0%, var(--card) 60%); }
+    .engagement-card.featured::after { content: 'MOST POPULAR'; position: absolute; top: 0; right: 0; background: var(--gold); color: var(--bg); font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 2px; padding: 6px 14px; border-radius: 0 16px 0 8px; }
+    .engagement-icon { font-size: 32px; margin-bottom: 20px; }
+    .engagement-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .engagement-ideal { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--teal); margin-bottom: 18px; }
+    .engagement-desc { font-size: 13px; color: var(--muted); line-height: 1.8; font-weight: 300; margin-bottom: 28px; }
+    .engagement-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .engagement-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted); }
+    .engagement-features li::before { content: '✓'; color: var(--gold); flex-shrink: 0; }
+    .engagement-cta { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--gold); display: inline-flex; align-items: center; gap: 6px; transition: gap .2s; }
+    .engagement-card:hover .engagement-cta { gap: 10px; }
+
+    /* ── FAQ ───────────────────────────────────────────────── */
+    #faq {
+      padding: 100px 64px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .faq-header { text-align: center; margin-bottom: 56px; }
+    .faq-h2 { font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,48px); font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+    .faq-h2 .gold { color: var(--gold); }
+    .faq-wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+    .faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color .2s; }
+    .faq-item.open { border-color: rgba(230,165,32,.3); }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 28px; cursor: none; user-select: none;
+      font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+      transition: color .2s;
+    }
+    .faq-item.open .faq-question { color: var(--gold); }
+    .faq-chevron { width: 20px; height: 20px; flex-shrink: 0; transition: transform .3s ease; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--gold); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s; }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer-inner { padding: 0 28px 22px; font-size: 14px; color: var(--muted); line-height: 1.8; font-weight: 300; border-top: 1px solid var(--border); padding-top: 16px; }
+
+    /* ── CTA ───────────────────────────────────────────────── */
+    #cta {
+      padding: 120px 64px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 700px; height: 400px; background: radial-gradient(ellipse, rgba(230,165,32,.08) 0%, transparent 65%); pointer-events: none; }
+    .cta-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 64px 64px; opacity: .15; pointer-events: none; }
+    .cta-inner { position: relative; z-index: 2; }
+    .cta-h2 { font-family: 'Syne', sans-serif; font-size: clamp(32px,5vw,64px); font-weight: 800; letter-spacing: -2px; line-height: .95; margin-bottom: 20px; }
+    .cta-h2 .gold { color: var(--gold); }
+    .cta-h2 .outline { -webkit-text-stroke: 1px var(--white); color: transparent; }
+    .cta-sub { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.8; font-weight: 300; }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+    .cta-perks { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+    .cta-perk { display: flex; align-items: center; gap: 8px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); }
+    .cta-perk-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: var(--neon-teal); }
+
+    /* ── FOOTER ────────────────────────────────────────────── */
+    footer { padding: 56px 64px 32px; border-top: 1px solid var(--border); background: var(--surface); position: relative; z-index: 2; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .footer-logo-text .name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; }
+    .footer-logo-text .name span { color: var(--gold); }
+    .footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.7; font-style: italic; max-width: 280px; }
+    .footer-col-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 18px; color: var(--white); }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 13px; color: var(--muted); transition: color .2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-socials { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .social-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: none; transition: border-color .2s, background .2s, transform .2s; }
+    .social-icon:hover { border-color: var(--gold); background: rgba(230,165,32,.1); transform: translateY(-3px); }
+    .footer-bottom { padding-top: 28px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+    .footer-made { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+    .footer-made span { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 305 295" fill="none">
+      <path d="M 145,62 A 88,88 0 1,0 145,228" stroke="#F4F1EB" stroke-width="30" stroke-linecap="round"/>
+      <line x1="195" y1="58" x2="195" y2="232" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
+      <path d="M 195,58 A 52,47 0 0,1 195,152" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
+      <line x1="195" y1="152" x2="288" y2="232" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
+    </svg>
+    <div class="nav-logo-text">
+      <div class="name">Cal<span>Rix</span></div>
+      <div class="sub">SOFTWORKS</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#about">About</a>
+    <a href="index.html#stack">Stack</a>
+    <a href="services.html" class="active-link">Services</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#blog">Blog</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+  <div class="nav-right">
+    <div class="theme-toggle">
+      <button class="theme-btn" id="btnLight" onclick="setTheme('light')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        Light
+      </button>
+      <button class="theme-btn active" id="btnDark" onclick="setTheme('dark')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        Dark
+      </button>
+    </div>
+    <a href="index.html#contact" class="nav-cta">Start a Project</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow-a"></div>
+  <div class="hero-glow-b"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">&lt; WHAT WE BUILD /&gt;</div>
+    <h1 class="hero-h1">
+      Systems.<br/>
+      <span class="gold">Software.</span><br/>
+      <span class="outline">Solutions.</span>
+    </h1>
+    <p class="hero-sub">Four focused services — each one executed with the precision and care that CalRix is built on. No templates. No shortcuts. Just systems that work.</p>
+    <div class="hero-btns">
+      <a href="#services-explorer" class="btn-primary">Explore Services ↓</a>
+      <a href="index.html#contact" class="btn-secondary">Start a Conversation →</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Core Services</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">3+</div>
+        <div class="hero-stat-label">Projects Delivered</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Completion Rate</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">24/7</div>
+        <div class="hero-stat-label">Post-Launch Support</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES EXPLORER -->
+<section id="services-explorer">
+  <div class="explorer-header reveal">
+    <div class="section-label">OUR SERVICES</div>
+    <h2 class="explorer-h2">What We <span class="gold">Build</span></h2>
+    <p class="explorer-sub">Click a service to explore in detail — what you get, who it's for, and how we deliver it.</p>
+  </div>
+
+  <div class="explorer-wrap reveal">
+    <!-- Sidebar -->
+    <div class="explorer-sidebar">
+      <div class="explorer-sidebar-label">SELECT A SERVICE</div>
+
+      <div class="svc-tab active" data-svc="web-development" id="tab-web-development">
+        <div class="svc-tab-icon">🌐</div>
+        <div>
+          <div class="svc-tab-title">Web Design &amp;<br/>Development</div>
+          <div class="svc-tab-desc">Sites &amp; web apps</div>
+        </div>
+        <div class="svc-tab-num">01</div>
+      </div>
+
+      <div class="svc-tab" data-svc="mobile-apps" id="tab-mobile-apps">
+        <div class="svc-tab-icon">📱</div>
+        <div>
+          <div class="svc-tab-title">Mobile App<br/>Development</div>
+          <div class="svc-tab-desc">iOS &amp; Android</div>
+        </div>
+        <div class="svc-tab-num">02</div>
+      </div>
+
+      <div class="svc-tab" data-svc="custom-software" id="tab-custom-software">
+        <div class="svc-tab-icon">⚙️</div>
+        <div>
+          <div class="svc-tab-title">Custom Software<br/>Development</div>
+          <div class="svc-tab-desc">Bespoke systems</div>
+        </div>
+        <div class="svc-tab-num">03</div>
+      </div>
+
+      <div class="svc-tab" data-svc="system-integration" id="tab-system-integration">
+        <div class="svc-tab-icon">🔗</div>
+        <div>
+          <div class="svc-tab-title">System<br/>Integration</div>
+          <div class="svc-tab-desc">Connect your tools</div>
+        </div>
+        <div class="svc-tab-num">04</div>
+      </div>
+    </div>
+
+    <!-- Panels -->
+    <div class="explorer-panel-wrap" id="explorerPanelWrap">
+
+      <!-- Panel 1: Web Development -->
+      <div class="svc-panel active" id="panel-web-development">
+        <div class="svc-panel-top">
+          <div class="svc-panel-headline">
+            <div class="svc-panel-tag">SERVICE 01</div>
+            <div class="svc-panel-title">Web Design &amp; Development</div>
+            <div class="svc-panel-subtitle">"From pixel to production — fast, responsive, and built to last."</div>
+          </div>
+          <div class="svc-panel-meta">
+            <div class="svc-meta-pill">
+              <div class="svc-meta-label">TIMELINE</div>
+              <div class="svc-meta-val">2–6 weeks</div>
+            </div>
+            <div class="svc-meta-pill">
+              <div class="svc-meta-label">PRICING</div>
+              <div class="svc-meta-val">Let's talk</div>
+            </div>
+          </div>
+        </div>
+        <div class="svc-panel-divider"></div>
+        <div class="svc-panel-grid">
+          <div>
+            <div class="svc-block-title">PERFECT IF YOU NEED</div>
+            <div class="svc-perfect-for">
+              <div class="svc-perfect-list">
+                <div class="svc-perfect-item">A professional online presence that reflects your brand</div>
+                <div class="svc-perfect-item">Replace an outdated or non-functional existing site</div>
+                <div class="svc-perfect-item">A landing page or marketing site that converts</div>
+                <div class="svc-perfect-item">A web app with user accounts, dashboards, or forms</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="svc-block-title">WHAT YOU GET</div>
+            <ul class="svc-deliverables">
+              <li>Custom responsive design (no templates)</li>
+              <li>SEO-ready HTML structure &amp; metadata</li>
+              <li>Contact forms, lead capture &amp; integrations</li>
+              <li>Cross-browser &amp; device testing</li>
+              <li>Performance optimization (speed &amp; load time)</li>
+              <li>CMS setup if content management is needed</li>
+              <li>3 months post-launch support included</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="svc-block-title">TECHNOLOGIES</div>
+          <div class="svc-stack">
+            <div class="svc-stack-chip"><span>🌐</span> HTML5 &amp; CSS3</div>
+            <div class="svc-stack-chip"><span>⚡</span> JavaScript</div>
+            <div class="svc-stack-chip"><span>🐘</span> Laravel</div>
+            <div class="svc-stack-chip"><span>🐘</span> PHP</div>
+            <div class="svc-stack-chip"><span>🗄️</span> PostgreSQL</div>
+            <div class="svc-stack-chip"><span>🎨</span> Figma</div>
+          </div>
+        </div>
+        <div class="svc-panel-cta">
+          <a href="index.html#contact" class="btn-primary">Start a Web Project →</a>
+          <a href="index.html#projects" class="btn-secondary">See Our Web Work</a>
+        </div>
+      </div>
+
+      <!-- Panel 2: Mobile Apps -->
+      <div class="svc-panel" id="panel-mobile-apps">
+        <div class="svc-panel-top">
+          <div class="svc-panel-headline">
+            <div class="svc-panel-tag">SERVICE 02</div>
+            <div class="svc-panel-title">Mobile App Development</div>
+            <div class="svc-panel-subtitle">"One codebase. iOS and Android. No compromises on quality."</div>
+          </div>
+          <div class="svc-panel-meta">
+            <div class="svc-meta-pill">
+              <div class="svc-meta-label">TIMELINE</div>
+              <div class="svc-meta-val">6–16 weeks</div>
+            </div>
+            <div class="svc-meta-pill">
+              <div class="svc-meta-label">PRICING</div>
+              <div class="svc-meta-val">Let's talk</div>
+            </div>
+          </div>
+        </div>
+        <div class="svc-panel-divider"></div>
+        <div class="svc-panel-grid">
+          <div>
+            <div class="svc-block-title">PERFECT IF YOU NEED</div>
+            <div class="svc-perfect-for">
+              <div class="svc-perfect-list">
+                <div class="svc-perfect-item">A customer-facing app on iOS and Android</div>
+                <div class="svc-perfect-item">An internal mobile tool for your team or field staff</div>
+                <div class="svc-perfect-item">A startup building an app-first product</div>
+                <div class="svc-perfect-item">Extend an existing web system to mobile</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="svc-block-title">WHAT YOU GET</div>
+            <ul class="svc-deliverables">
+              <li>Cross-platform Flutter app (iOS &amp; Android)</li>
+              <li>Custom UI/UX tailored to your brand</li>
+              <li>Backend API integration or full backend build</li>
+              <li>Push notifications &amp; real-time features</li>
+              <li>App Store &amp; Play Store submission support</li>
+              <li>Offline functionality where applicable</li>
+              <li>3 months post-launch support included</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="svc-block-title">TECHNOLOGIES</div>
+          <div class="svc-stack">
+            <div class="svc-stack-chip"><span>📱</span> Flutter</div>
+            <div class="svc-stack-chip"><span>🎯</span> Dart</div>
+            <div class="svc-stack-chip"><span>🔥</span> Firebase</div>
+            <div class="svc-stack-chip"><span>🐘</span> Laravel APIs</div>
+            <div class="svc-stack-chip"><span>🗄️</span> PostgreSQL</div>
+            <div class="svc-stack-chip"><span>🎨</span> Figma</div>
+          </div>
+        </div>
+        <div class="svc-panel-cta">
+          <a href="index.html#contact" class="btn-primary">Start a Mobile Project →</a>
+          <a href="index.html#projects" class="btn-secondary">See Our Work</a>
+        </div>
+      </div>
+
+      <!-- Panel 3: Custom Software -->
+      <div class="svc-panel" id="panel-custom-software">
+        <div class="svc-panel-top">
+          <div class="svc-panel-headline">
+            <div class="svc-panel-tag">SERVICE 03</div>
+            <div class="svc-panel-title">Custom Software Development</div>
+            <div class="svc-panel-subtitle">"Built exactly for your problem. Not adapted from someone else's solution."</div>
+          </div>
+          <div class="svc-panel-meta">
+            <div class="svc-meta-pill">
+              <div class="svc-meta-label">TIMELINE</div>
+              <div class="svc-meta-val">8–20 weeks</div>
+            </div>
+            <div class="svc-meta-pill">
+              <div class="svc-meta-label">PRICING</div>
+              <div class="svc-meta-val">Let's talk</div>
+            </div>
+          </div>
+        </div>
+        <div class="svc-panel-divider"></div>
+        <div class="svc-panel-grid">
+          <div>
+            <div class="svc-block-title">PERFECT IF YOU NEED</div>
+            <div class="svc-perfect-for">
+              <div class="svc-perfect-list">
+                <div class="svc-perfect-item">A management system off-the-shelf software can't solve</div>
+                <div class="svc-perfect-item">Schools, clinics, or SMEs needing operational software</div>
+                <div class="svc-perfect-item">Replace complex Excel-based or paper-based workflows</div>
+                <div class="svc-perfect-item">SaaS product development from idea to MVP</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="svc-block-title">WHAT YOU GET</div>
+            <ul class="svc-deliverables">
+              <li>Full discovery &amp; requirements documentation</li>
+              <li>Database architecture &amp; schema design</li>
+              <li>Custom admin dashboard &amp; reporting</li>
+              <li>User roles, permissions &amp; access control</li>
+              <li>Data import/export &amp; migration</li>
+              <li>Training, documentation &amp; handover</li>
+              <li>Ongoing support &amp; maintenance plans</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="svc-block-title">TECHNOLOGIES</div>
+          <div class="svc-stack">
+            <div class="svc-stack-chip"><span>🐘</span> Laravel</div>
+            <div class="svc-stack-chip"><span>☕</span> Java + Spring</div>
+            <div class="svc-stack-chip"><span>🗄️</span> PostgreSQL</div>
+            <div class="svc-stack-chip"><span>🔶</span> Oracle DB</div>
+            <div class="svc-stack-chip"><span>⚡</span> JavaScript</div>
+            <div class="svc-stack-chip"><span>🎨</span> Figma</div>
+          </div>
+        </div>
+        <div class="svc-panel-cta">
+          <a href="index.html#contact" class="btn-primary">Discuss Your System →</a>
+          <a href="index.html#showcase" class="btn-secondary">See ShuleCloud (Example)</a>
+        </div>
+      </div>
+
+      <!-- Panel 4: System Integration -->
+      <div class="svc-panel" id="panel-system-integration">
+        <div class="svc-panel-top">
+          <div class="svc-panel-headline">
+            <div class="svc-panel-tag">SERVICE 04</div>
+            <div class="svc-panel-title">System Integration</div>
+            <div class="svc-panel-subtitle">"Make your tools talk to each other — and work as one."</div>
+          </div>
+          <div class="svc-panel-meta">
+            <div class="svc-meta-pill">
+              <div class="svc-meta-label">TIMELINE</div>
+              <div class="svc-meta-val">3–10 weeks</div>
+            </div>
+            <div class="svc-meta-pill">
+              <div class="svc-meta-label">PRICING</div>
+              <div class="svc-meta-val">Let's talk</div>
+            </div>
+          </div>
+        </div>
+        <div class="svc-panel-divider"></div>
+        <div class="svc-panel-grid">
+          <div>
+            <div class="svc-block-title">PERFECT IF YOU NEED</div>
+            <div class="svc-perfect-for">
+              <div class="svc-perfect-list">
+                <div class="svc-perfect-item">Multiple tools with manual data transfers between them</div>
+                <div class="svc-perfect-item">APIs between platforms (payment, SMS, ERP, etc.)</div>
+                <div class="svc-perfect-item">Connecting legacy systems with modern web/mobile apps</div>
+                <div class="svc-perfect-item">Centralised dashboard pulling data from multiple sources</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="svc-block-title">WHAT YOU GET</div>
+            <ul class="svc-deliverables">
+              <li>API design, build &amp; documentation</li>
+              <li>Third-party service integrations</li>
+              <li>Data mapping, transformation &amp; migration</li>
+              <li>Webhook setup &amp; event-driven triggers</li>
+              <li>Error handling, logging &amp; monitoring</li>
+              <li>Integration testing &amp; QA</li>
+              <li>Post-integration support &amp; maintenance</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="svc-block-title">TECHNOLOGIES</div>
+          <div class="svc-stack">
+            <div class="svc-stack-chip"><span>🔗</span> REST APIs</div>
+            <div class="svc-stack-chip"><span>🐘</span> Laravel</div>
+            <div class="svc-stack-chip"><span>⚡</span> JavaScript</div>
+            <div class="svc-stack-chip"><span>🗄️</span> PostgreSQL</div>
+            <div class="svc-stack-chip"><span>🔀</span> Git</div>
+            <div class="svc-stack-chip"><span>☁️</span> Cloud Hosting</div>
+          </div>
+        </div>
+        <div class="svc-panel-cta">
+          <a href="index.html#contact" class="btn-primary">Start an Integration →</a>
+          <a href="index.html#contact" class="btn-secondary">Ask a Question</a>
+        </div>
+      </div>
+
+    </div><!-- /explorer-panel-wrap -->
+  </div><!-- /explorer-wrap -->
+</section>
+
+<!-- HOW WE WORK -->
+<section id="process">
+  <div class="process-header reveal">
+    <div class="section-label" style="justify-content:center">THE PROCESS</div>
+    <h2 class="process-h2">How We <span class="gold">Work</span></h2>
+    <p class="process-sub" style="color:var(--muted);font-size:15px;font-weight:300;">A disciplined process that keeps every project on time, on spec, and built right.</p>
+  </div>
+  <div class="process-steps">
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-step-num"><span class="step-num-text">01</span></div>
+      <div class="process-step-label">Discovery</div>
+      <p class="process-step-desc">We start by deeply understanding your problem, your users, and your goals — before writing a single line of code.</p>
+      <span class="process-step-time">1–2 WEEKS</span>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="process-step-num"><span class="step-num-text">02</span></div>
+      <div class="process-step-label">Architecture</div>
+      <p class="process-step-desc">We design the system structure, database schema, and technical plan — so build phase has zero surprises.</p>
+      <span class="process-step-time">1 WEEK</span>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="process-step-num"><span class="step-num-text">03</span></div>
+      <div class="process-step-label">Build</div>
+      <p class="process-step-desc">Iterative development with weekly updates. You see real progress every week — not just a final reveal.</p>
+      <span class="process-step-time">VARIES</span>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-step-num"><span class="step-num-text">04</span></div>
+      <div class="process-step-label">QA &amp; Testing</div>
+      <p class="process-step-desc">Full cross-device, cross-browser testing. We don't ship until it works the way it should — every time.</p>
+      <span class="process-step-time">1–2 WEEKS</span>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="process-step-num"><span class="step-num-text">05</span></div>
+      <div class="process-step-label">Deploy &amp; Support</div>
+      <p class="process-step-desc">We handle deployment, training, and documentation — and stay available post-launch for 3 months minimum.</p>
+      <span class="process-step-time">ONGOING</span>
+    </div>
+  </div>
+</section>
+
+<!-- ENGAGEMENT MODELS -->
+<section id="engagement">
+  <div class="engagement-header reveal">
+    <div class="section-label" style="justify-content:center">HOW TO WORK WITH US</div>
+    <h2 class="engagement-h2">Engagement <span class="gold">Models</span></h2>
+    <p class="engagement-sub">Three ways to work with CalRix — pick what fits your situation best.</p>
+  </div>
+  <div class="engagement-grid">
+    <div class="engagement-card reveal reveal-delay-1">
+      <div class="engagement-icon">🎯</div>
+      <div class="engagement-title">Fixed-Price Project</div>
+      <div class="engagement-ideal">CLEAR SCOPE · DEFINED BUDGET</div>
+      <p class="engagement-desc">You have a clear project in mind. We scope it together, agree on a price, and deliver it. No surprises.</p>
+      <ul class="engagement-features">
+        <li>Full discovery &amp; specification upfront</li>
+        <li>Fixed timeline &amp; milestones</li>
+        <li>Price agreed before work begins</li>
+        <li>Best for: sites, apps, MVPs</li>
+      </ul>
+      <a href="index.html#contact" class="engagement-cta">Get a Quote →</a>
+    </div>
+    <div class="engagement-card featured reveal reveal-delay-2">
+      <div class="engagement-icon">🤝</div>
+      <div class="engagement-title">Ongoing Retainer</div>
+      <div class="engagement-ideal">LONG-TERM PARTNERSHIP</div>
+      <p class="engagement-desc">You need a reliable tech team on call. We allocate dedicated hours each month to your product or infrastructure.</p>
+      <ul class="engagement-features">
+        <li>Dedicated monthly development hours</li>
+        <li>Priority response &amp; turnaround</li>
+        <li>Monthly planning &amp; review sessions</li>
+        <li>Best for: growing products, ongoing needs</li>
+      </ul>
+      <a href="index.html#contact" class="engagement-cta">Let's Talk →</a>
+    </div>
+    <div class="engagement-card reveal reveal-delay-3">
+      <div class="engagement-icon">🏢</div>
+      <div class="engagement-title">Enterprise Custom</div>
+      <div class="engagement-ideal">COMPLEX SYSTEMS · SLA</div>
+      <p class="engagement-desc">Large-scale, multi-module, or mission-critical systems. We build a custom engagement model around your needs.</p>
+      <ul class="engagement-features">
+        <li>Dedicated project architecture</li>
+        <li>Custom SLA &amp; support agreement</li>
+        <li>Multi-phase delivery planning</li>
+        <li>Best for: institutions, large SMEs</li>
+      </ul>
+      <a href="index.html#contact" class="engagement-cta">Start the Conversation →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-header reveal">
+    <div class="section-label" style="justify-content:center">FAQ</div>
+    <h2 class="faq-h2">Common <span class="gold">Questions</span></h2>
+  </div>
+  <div class="faq-wrap">
+    <div class="faq-item reveal reveal-delay-1">
+      <div class="faq-question">
+        Do you work with clients outside Tanzania?
+        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer"><div class="faq-answer-inner">Yes. While we are based in Dar es Salaam and our primary focus is Tanzania and East Africa, we work with clients remotely across Africa and internationally. All communication and project management can be handled fully online.</div></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-2">
+      <div class="faq-question">
+        Can you take over an existing codebase or project?
+        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer"><div class="faq-answer-inner">Yes, but we do a thorough code audit first. We need to understand what we're inheriting before committing to timelines or pricing. If the existing code is too problematic, we'll tell you honestly — even if that means recommending a rebuild.</div></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-3">
+      <div class="faq-question">
+        How does payment work?
+        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer"><div class="faq-answer-inner">For fixed-price projects, we typically work on a 40% upfront / 40% at midpoint / 20% on delivery milestone structure. For retainers, monthly invoicing applies. We accept M-Pesa, bank transfer, and mobile banking. Payment terms are agreed upfront in writing.</div></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-1">
+      <div class="faq-question">
+        Do you provide hosting and domain setup?
+        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer"><div class="faq-answer-inner">We can recommend, set up, and configure hosting for you. We'll always use reliable, appropriate hosting for your project's scale and budget. Domain registration is done in your name — you always retain full ownership of your assets.</div></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-2">
+      <div class="faq-question">
+        What happens after the project is delivered?
+        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer"><div class="faq-answer-inner">Every project includes a minimum 3-month post-launch support period for bug fixes and small adjustments at no extra cost. After that, you can engage us on a retainer, hire us for enhancements, or move on fully — your choice. We hand over full code ownership and documentation regardless.</div></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-3">
+      <div class="faq-question">
+        How quickly can you start?
+        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer"><div class="faq-answer-inner">Typically within 1–2 weeks of agreement and deposit. We run discovery in parallel with any final contract paperwork, so there's no dead time waiting for things to start moving. If you're urgent, tell us — we'll be upfront about whether we can accommodate your timeline.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-grid-bg"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-inner reveal">
+    <div class="section-label" style="justify-content:center">READY?</div>
+    <h2 class="cta-h2">
+      Let's Build<br/>
+      <span class="gold">Something</span><br/>
+      <span class="outline">Real.</span>
+    </h2>
+    <p class="cta-sub">Tell us what you need. We'll respond within 24 hours with an honest take on how we can help — and what it would take.</p>
+    <div class="cta-btns">
+      <a href="https://calendly.com/mathiasrichie27/free-30-minute-discovery-call" class="btn-primary">📞 Book a Free 30-Min Call</a>
+      <a href="index.html#contact" class="btn-secondary">Send a Project Brief →</a>
+    </div>
+    <div class="cta-perks">
+      <div class="cta-perk"><div class="cta-perk-dot"></div>NO OBLIGATION QUOTE</div>
+      <div class="cta-perk"><div class="cta-perk-dot"></div>RESPONSE WITHIN 24 HRS</div>
+      <div class="cta-perk"><div class="cta-perk-dot"></div>FREE DISCOVERY CALL</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">
+        <svg width="34" height="34" viewBox="0 0 305 295" fill="none">
+          <path d="M 145,62 A 88,88 0 1,0 145,228" stroke="#F4F1EB" stroke-width="30" stroke-linecap="round"/>
+          <line x1="195" y1="58" x2="195" y2="232" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
+          <path d="M 195,58 A 52,47 0 0,1 195,152" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
+          <line x1="195" y1="152" x2="288" y2="232" stroke="#E6A520" stroke-width="26" stroke-linecap="round"/>
+        </svg>
+        <div class="footer-logo-text">
+          <div class="name">Cal<span>Rix</span></div>
+          <div class="sub">SOFTWORKS</div>
+        </div>
+      </div>
+      <p class="footer-tagline">"The world runs on systems. We build them."</p>
+      <div class="footer-socials">
+        <a href="https://wa.me/255794954954" target="_blank" rel="noopener noreferrer" class="social-icon" title="WhatsApp">💬</a>
+        <a href="#" class="social-icon" title="LinkedIn">in</a>
+        <a href="#" class="social-icon" title="GitHub"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--muted)"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85 0 1.33-.01 2.41-.01 2.74 0 .27.18.58.69.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"/></svg></a>
+        <a href="#" class="social-icon" title="Instagram">📷</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigation</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="services.html">Services</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="index.html#blog">Blog</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <div class="footer-links">
+        <a href="services.html#web-development">Web Development</a>
+        <a href="services.html#mobile-apps">Mobile Apps</a>
+        <a href="services.html#custom-software">Custom Software</a>
+        <a href="services.html#system-integration">System Integration</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Products</div>
+      <div class="footer-links">
+        <a href="index.html#showcase">ShuleCloud</a>
+        <a href="index.html#contact">Work With Us</a>
+        <a href="https://calendly.com/mathiasrichie27/free-30-minute-discovery-call">Book a Call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&copy; 2025 CalRix Softworks. All rights reserved.</p>
+    <p class="footer-made">BUILT IN <span>TANZANIA</span> &middot; DAR ES SALAAM</p>
+  </div>
+</footer>
+
+<script>
+  // ── Cursor
+  var dot  = document.getElementById('cursor-dot');
+  var ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', function(e) {
+    dot.style.transform  = 'translate(' + (e.clientX - 4)  + 'px, ' + (e.clientY - 4)  + 'px)';
+    ring.style.transform = 'translate(' + (e.clientX - 16) + 'px, ' + (e.clientY - 16) + 'px)';
+  });
+
+  // ── Theme
+  function setTheme(mode) {
+    if (mode === 'light') {
+      document.body.classList.add('light-mode');
+      document.getElementById('btnLight').classList.add('active');
+      document.getElementById('btnDark').classList.remove('active');
+      localStorage.setItem('calrix-theme', 'light');
+    } else {
+      document.body.classList.remove('light-mode');
+      document.getElementById('btnDark').classList.add('active');
+      document.getElementById('btnLight').classList.remove('active');
+      localStorage.setItem('calrix-theme', 'dark');
+    }
+  }
+  (function() { if (localStorage.getItem('calrix-theme') === 'light') setTheme('light'); })();
+
+  // ── Navbar scroll
+  window.addEventListener('scroll', function() {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── Scroll reveal
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el) { revealObs.observe(el); });
+
+  // ── Services Explorer
+  var currentSvc = 'web-development';
+  function activateService(svcId) {
+    document.querySelectorAll('.svc-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.svc-panel').forEach(function(p) { p.classList.remove('active'); });
+    var tab   = document.getElementById('tab-' + svcId);
+    var panel = document.getElementById('panel-' + svcId);
+    if (tab)   tab.classList.add('active');
+    if (panel) panel.classList.add('active');
+    currentSvc = svcId;
+    history.replaceState(null, '', '#' + svcId);
+  }
+  document.querySelectorAll('.svc-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      activateService(this.dataset.svc);
+    });
+  });
+
+  // ── Hash-based navigation + triple-blink
+  function handleHash() {
+    var hash = window.location.hash.replace('#', '');
+    var validServices = ['web-development', 'mobile-apps', 'custom-software', 'system-integration'];
+    if (validServices.indexOf(hash) !== -1) {
+      activateService(hash);
+      // Scroll to explorer
+      setTimeout(function() {
+        var explorer = document.getElementById('services-explorer');
+        if (explorer) {
+          var offset = 80; // navbar height
+          var top = explorer.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+        // Triple-blink on the panel wrap and the sidebar tab
+        setTimeout(function() {
+          var panel = document.getElementById('panel-' + hash);
+          var tab   = document.getElementById('tab-'   + hash);
+          if (panel) {
+            panel.classList.remove('triple-blink');
+            void panel.offsetWidth; // reflow to restart animation
+            panel.classList.add('triple-blink');
+            setTimeout(function() { panel.classList.remove('triple-blink'); }, 2600);
+          }
+          if (tab) {
+            tab.classList.remove('triple-blink-tab');
+            void tab.offsetWidth;
+            tab.classList.add('triple-blink-tab');
+            setTimeout(function() { tab.classList.remove('triple-blink-tab'); }, 2600);
+          }
+        }, 700); // after scroll settles
+      }, 100);
+    }
+  }
+  // Run on load if hash present
+  if (window.location.hash) { handleHash(); }
+  window.addEventListener('hashchange', handleHash);
+
+  // ── FAQ Accordion
+  document.querySelectorAll('.faq-question').forEach(function(q) {
+    q.addEventListener('click', function() {
+      var item = this.parentElement;
+      var isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+      // Toggle clicked
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
